@@ -1,10 +1,16 @@
 let word_list = []
 let letter_flow_list = []
 let loaded_letters = []
+let slots = []
 import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./qol"
 
 
 async function loadWords(){
+    detect(find(".submit"),"click",submitWord)
+    findAll(".blank").forEach((slot) =>{
+        slots.push(slot)
+    })
+
     const fileUrl = 'https://raw.githubusercontent.com/jmlewis/valett/master/scrabble/sowpods.txt' // provide file location
 
     const response = await fetch(fileUrl)
@@ -14,6 +20,25 @@ async function loadWords(){
         return word.toLowerCase()
     })
 
+}
+
+const submitWord = () => {
+    let word = ''
+    loaded_letters.map((letter, index) => {
+        word = word + letter.textContent
+        remove(slots[index], letter);
+    })
+    loaded_letters = []
+    let score = checkWordNow(word.toLowerCase())
+    if (score === 0){
+        for (let i = 0; i < word.length; i++) {
+            render(find(".letter-spawns"),letterElement(word[i]))
+          }
+    }
+    else{
+        const points = find(".points")
+        write(points, parseInt(points.textContent)+score)
+    }
 }
 
 function checkWordNow(word){
@@ -96,14 +121,33 @@ function letterElement(lett){
 }
 
 const letterTouch = (e)=>{
-    remove(find(".letter-spawns"), e.target)
-    letter_flow_list = letter_flow_list.filter(letter => letter === e.target);
-    loadLetter(e.target)
+    undetect(e.target, "click", letterTouch)
+    if (letter_flow_list.length < 7){    
+        remove(find(".letter-spawns"), e.target)
+        letter_flow_list = letter_flow_list.filter(letter => letter === e.target);
+        loadLetter(e.target)
+        detect(e.target, "click", letterRem)
+    }
+}
+
+const letterRem = (e) =>{
+    const index = loaded_letters.indexOf(e.target)
+    console.log(index)
+    remove(find(`.slot-${index}`),e.target)
+    for (let i = index + 1; i<loaded_letters.length; i++){
+        const temp = loaded_letters[i]
+        remove(find(`.slot-${i}`),temp)
+        render(find(`.slot-${i-1}`),temp)
+        loaded_letters[i-1] = temp
+    }
+    loaded_letters.pop()
+    console.log(loaded_letters)
+    render(find(".letter-spawns"),letterElement(e.target.textContent))
 }
 
 function randomLetter(){
     let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const characters = 'AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLLMMNNNNNNOOOOOOOOPPQRRRRRRSSSSTTTTTTUUUUVVWWXYYZ'
     const charactersLength = characters.length;
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
     return result;
@@ -112,8 +156,10 @@ function randomLetter(){
 function loadLetter(letele){
     render(find(`.slot-${loaded_letters.length}`),letele)
     remClass(letele,["inflow"])
+    addClass(letele,["loaded"])
     style(letele, `
         transform:rotate(0deg);
+        transform: translate(-1px,-1px);
     `)
     loaded_letters.push(letele)
 }

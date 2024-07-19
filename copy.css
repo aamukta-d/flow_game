@@ -304,6 +304,8 @@ div#user-feedback {
 .blank-letters{
     display:flex;
     gap: 10px;
+    padding: 50px;
+    border: 1px solid gray;
 }
 
 .blank {
@@ -316,6 +318,7 @@ div#user-feedback {
     width: 1.3em;
     padding-right: 0.1em;
     border-radius: 5px;
+    position:relative;
    /* ems not rems, so we can scale down the tiles separate from the rest of the page */
    /* add the score to each tile */
 }
@@ -325,7 +328,28 @@ div#user-feedback {
     left:50vw;
     top: 40vh;
     transform: translate(-50%,-50%);
-    padding: 50px;
-    border: 1px solid gray;
+}
+
+.submit{
+    max-height: 1.3em;
+    padding: 10px;
+    background: rgb(155, 207, 253);
+    border: 1px solid rgb(25, 39, 107);
     border-radius: 5px;
+    font-size: 0.6em;
+}
+
+.point-div, .timer-div{
+    min-height: 1.3em;
+    padding: 10px;
+    background: rgb(155, 207, 253);
+    border: 1px solid rgb(25, 39, 107);
+    font-size: 0.6em;
+}
+.small-text{
+    font-size: 0.6em;
+}
+
+.top-bar{
+    display: flex;
 }
