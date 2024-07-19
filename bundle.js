@@ -175,6 +175,7 @@ function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyri
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 var word_list = exports.word_list = [];
+var letter_flow_list = [];
 function loadWords() {
   return _loadWords.apply(this, arguments);
 }
@@ -274,8 +275,16 @@ function letterElement(lett) {
   (0, _qol.addClass)(ele, ["tile"]);
   var rotation = Math.random() * 90 - 45;
   (0, _qol.style)(ele, "\n            transform:rotate(".concat(rotation, "deg)\n        "));
+  (0, _qol.detect)(ele, "click", letterTouch);
+  letter_flow_list.push(ele);
   return ele;
 }
+var letterTouch = function letterTouch(e) {
+  (0, _qol.remove)((0, _qol.find)(".letter-spawns"), e.target);
+  letter_flow_list = letter_flow_list.filter(function (letter) {
+    return letter === e.target;
+  });
+};
 function randomLetter() {
   var result = '';
   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

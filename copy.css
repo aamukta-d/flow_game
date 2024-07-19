@@ -300,3 +300,22 @@ div#user-feedback {
         bottom: 0.2rem;
    }
 }
+
+.blank-letters{
+    display:flex;
+    gap: 10px;
+}
+
+.blank {
+    background: lightgray;
+    border: 1px solid gray;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    height: 1.3em;
+    width: 1.3em;
+    padding-right: 0.1em;
+    border-radius: 5px;
+   /* ems not rems, so we can scale down the tiles separate from the rest of the page */
+   /* add the score to each tile */
+}

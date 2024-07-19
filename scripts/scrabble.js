@@ -1,4 +1,5 @@
 let word_list = []
+let letter_flow_list = []
 import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./qol"
 
 
@@ -89,7 +90,14 @@ function letterElement(lett){
     style(ele, `
             transform:rotate(${rotation}deg)
         `)
+    detect(ele, "click", letterTouch)
+    letter_flow_list.push(ele)
     return ele
+}
+
+const letterTouch = (e)=>{
+    remove(find(".letter-spawns"), e.target)
+    letter_flow_list = letter_flow_list.filter(letter => letter === e.target);
 }
 
 function randomLetter(){
