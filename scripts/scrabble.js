@@ -1,4 +1,6 @@
 let word_list = []
+import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./qol"
+
 
 async function loadWords(){
     
@@ -79,9 +81,10 @@ function getLetterScore(letter){
 
 function letterElement(lett){
     let letter = lett.toUpperCase()
-    ele = create("span")
+    let ele = create("span")
     ele.dataset.score = getLetterScore(letter)
     write(ele, letter)
+    addClass(ele,["tile"])
     return ele
 }
 

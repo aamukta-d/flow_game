@@ -1,0 +1,302 @@
+html, body {
+    font-family: "Source Sans Pro", sans-serif;
+    text-align: center;
+    font-size: 24px;
+   /* 1 rem small screens */
+    min-height: 100%;
+    width: 100%;
+}
+/* media query for overall page sizing on larger screens */
+@media screen and (min-width: 570px) {
+    html, body {
+        font-size: 34px;
+       /* 1 rem large screens*/
+   }
+}
+/* ------- the upper portion of the app - word checker -------- */
+h1 {
+    color: #c58181;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+h1 span {
+    color: white;
+}
+#word-checker {
+    background: radial-gradient(#a00707 25%, #6b1714);
+    box-sizing: border-box;
+   /*height: 100vh;
+    */
+    min-height: 100vh;
+    width: 100%;
+    padding: 0.8rem 0.8rem 0rem;
+}
+input#scrabble-word, span.tile {
+    text-transform: uppercase;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+input#scrabble-word {
+    max-width: 10.5rem;
+    padding-left: 0.25rem;
+}
+.tile {
+    background: tan;
+    border: 1px solid #c7a16f;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    height: 1.3em;
+    width: 1.3em;
+    padding-right: 0.1em;
+   /* ems not rems, so we can scale down the tiles separate from the rest of the page */
+   /* add the score to each tile */
+}
+.tile[data-score]::after {
+    content: attr(data-score);
+    font-size: 0.43em;
+    position: absolute;
+    bottom: 0.03em;
+    right: 0.08em;
+}
+div#user-feedback {
+    background: #ffd1b9;
+    border-radius: 7px;
+    width: 100%;
+    max-width: 25rem;
+    margin: 2.3rem auto 0;
+    padding: 0.5rem 0;
+}
+#response-title {
+    color: #a00707;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+}
+#response-message {
+    font-size: 0.8rem;
+}
+#scrabble-tiles {
+    margin-bottom: 0.2rem;
+}
+#scrabble-tiles .tile {
+    margin: 0.5em 0.2em 0.5em 0;
+    font-size: 34px;
+   /* choosing to design for 10 letter words (longer will wrap to a second line, since those are rare.) */
+   /* this value defines the "em" that .tile styles are based on */
+}
+/* media queries for sizing the bouncing tiles on smaller screens */
+@media screen and (max-width: 670px) {
+    #scrabble-tiles .tile {
+        font-size: 29px;
+   }
+}
+@media screen and (max-width: 570px) {
+    #scrabble-tiles .tile {
+        font-size: 25px;
+   }
+}
+@media screen and (max-width: 480px) {
+    #scrabble-tiles .tile {
+        font-size: 20px;
+   }
+}
+@media screen and (max-width: 390px) {
+    #scrabble-tiles .tile {
+        font-size: 17px;
+   }
+}
+.disclaimer {
+    color: #c58181;
+    font-size: 0.35rem;
+    margin-top: 0.1rem;
+}
+#footer-nav {
+    color: white;
+    box-sizing: border-box;
+    font-size: 0.75rem;
+    letter-spacing: 0.03rem;
+    position: absolute;
+    width: 90%;
+    height: 1.5rem;
+    bottom: 0.5rem;
+    padding: 0 2rem;
+}
+/* When the user's mobile keyboard is open, it shortens the screen height */
+/* This was causing the "scroll down" footer to overlap other elements */
+/* So hide it when the screen height gets too short */
+@media screen and (max-height: 500px) {
+   /* 350 */
+    #footer-nav {
+        display: none;
+   }
+}
+#footer-nav h2 {
+    position: relative;
+    display: block;
+    width: 8.8rem;
+    margin: 0 auto;
+}
+/* the >> deocarations */
+#footer-nav h2::before {
+    content: "> >";
+    transform: rotate(90deg);
+    position: absolute;
+    left: -0.8rem;
+    bottom: 0.25rem;
+}
+#footer-nav h2::after {
+    content: "> >";
+    transform: rotate(90deg);
+    position: absolute;
+    right: -0.8rem;
+    bottom: 0.25rem;
+}
+/* ------- the lower portion of the app - 2-letter words -------- */
+#two-letter {
+    background: radial-gradient(#a00707 25%, #6b1714);
+    box-sizing: border-box;
+    min-height: 150vh;
+    width: 100%;
+    padding: 0.8rem 0.8rem 1rem;
+}
+#two-letter h1 {
+    background: linear-gradient(to right, #6b1714, #880606, #6b1714);
+    z-index: 10;
+    position: sticky;
+    top: 0;
+    margin-left: -0.8rem;
+    margin-right: -0.8rem;
+}
+.word-container {
+    background: #ffd1b9;
+    border-radius: 7px;
+    box-sizing: border-box;
+    z-index: 1;
+    width: 100%;
+    max-width: 25rem;
+    margin: 2.3rem auto 0;
+    padding: 0.9rem 0.5rem 0.2rem;
+}
+.word-container p {
+   /* Need flex layout to keep tiles from breaking words on wrap */
+   /* Typical text methods don't work on the inline-block tiles*/
+   /* Each set of tiles is wrapped in a span, so that span will be what wraps */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 0.8rem;
+}
+.word-container p > span {
+    margin-right: 0.4rem;
+    margin-bottom: 0.7rem;
+}
+.word-container .tile {
+    margin-right: 0.09rem;
+}
+/* ------- DECORATIVE TILES AROUND SEARCH FIELD --------- */
+#search-row {
+    position: relative;
+    display: inline;
+}
+#search-row #left-tiles, #search-row #right-tiles {
+    display: inline;
+}
+#search-row .tile {
+    position: absolute;
+}
+#left-tiles .tile:first-of-type {
+    top: 0.3rem;
+    left: -2rem;
+    transform: rotate(3deg);
+}
+#left-tiles .tile:last-of-type {
+    top: 1.1rem;
+    left: -1.2rem;
+    transform: rotate(-9deg);
+}
+#right-tiles .tile:first-of-type {
+    top: 0.2rem;
+    right: -1.9rem;
+    transform: rotate(-3deg);
+}
+#right-tiles .tile:last-of-type {
+    top: 1.1rem;
+    right: -1.3rem;
+    transform: rotate(9deg);
+}
+/* ------- ANIMATIONS --------- */
+#scrabble-tiles .tile {
+    animation: bounce 3.5s ease-out infinite;
+   /* add staggered animation delay to each tile */
+}
+#scrabble-tiles .tile[data-index="0"] {
+    animation-delay: 0s;
+}
+#scrabble-tiles .tile[data-index="1"] {
+    animation-delay: 0.1s;
+}
+#scrabble-tiles .tile[data-index="2"] {
+    animation-delay: 0.2s;
+}
+#scrabble-tiles .tile[data-index="3"] {
+    animation-delay: 0.3s;
+}
+#scrabble-tiles .tile[data-index="4"] {
+    animation-delay: 0.4s;
+}
+#scrabble-tiles .tile[data-index="5"] {
+    animation-delay: 0.5s;
+}
+#scrabble-tiles .tile[data-index="6"] {
+    animation-delay: 0.6s;
+}
+#scrabble-tiles .tile[data-index="7"] {
+    animation-delay: 0.7s;
+}
+#scrabble-tiles .tile[data-index="8"] {
+    animation-delay: 0.8s;
+}
+#scrabble-tiles .tile[data-index="9"] {
+    animation-delay: 0.9s;
+}
+#scrabble-tiles .tile[data-index="10"] {
+    animation-delay: 1s;
+}
+#scrabble-tiles .tile[data-index="11"] {
+    animation-delay: 1.1s;
+}
+#scrabble-tiles .tile[data-index="12"] {
+    animation-delay: 1.2s;
+}
+#scrabble-tiles .tile[data-index="13"] {
+    animation-delay: 1.3s;
+}
+#scrabble-tiles .tile[data-index="14"] {
+    animation-delay: 1.4s;
+}
+/* the >> deocarations */
+#footer-nav h2::before {
+    animation: nav-bounce 0.5s ease-out infinite;
+}
+#footer-nav h2::after {
+    animation: nav-bounce 0.5s ease-out infinite;
+}
+@keyframes bounce {
+    0% {
+        transform: translateY(0px) scale(1);
+   }
+    5% {
+        transform: translateY(-12px) scale(1.05);
+        box-shadow: 1px 1px 2px gray;
+   }
+    10% {
+        transform: translateY(0px) scale(1);
+        box-shadow: 0 0 0 gray;
+   }
+}
+@keyframes nav-bounce {
+    50% {
+        bottom: 0.2rem;
+   }
+}

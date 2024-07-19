@@ -10,8 +10,9 @@ async function start(){
 
 function game_loop(){
 
-    if (timer != 0){
+    if (timer !== 0){
         render(find(".letter-spawns"),letterElement("E"))
+        console.log("pl")
     }
 }
 

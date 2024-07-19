@@ -72,3 +72,8 @@ body {
         transform: translate3d(85px, 0, 0);
     }
 }
+
+.letter-spawns{
+    background: none;
+    position: absolute;
+}
