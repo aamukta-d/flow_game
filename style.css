@@ -62,7 +62,7 @@ body {
     animation-duration: 26s;
 }
 
-.tile{
+.inflow{
     animation-duration: 45s;
     animation-name: moving-tiles;
     background: none;

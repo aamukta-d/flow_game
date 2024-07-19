@@ -176,6 +176,7 @@ function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 var word_list = exports.word_list = [];
 var letter_flow_list = [];
+var loaded_letters = [];
 function loadWords() {
   return _loadWords.apply(this, arguments);
 }
@@ -272,9 +273,9 @@ function letterElement(lett) {
   var ele = (0, _qol.create)("span");
   ele.dataset.score = getLetterScore(letter);
   (0, _qol.write)(ele, letter);
-  (0, _qol.addClass)(ele, ["tile"]);
+  (0, _qol.addClass)(ele, ["tile", "inflow"]);
   var rotation = Math.random() * 90 - 45;
-  (0, _qol.style)(ele, "\n            transform:rotate(".concat(rotation, "deg)\n        "));
+  (0, _qol.style)(ele, "\n            transform:rotate(".concat(rotation, "deg);\n        "));
   (0, _qol.detect)(ele, "click", letterTouch);
   letter_flow_list.push(ele);
   return ele;
@@ -284,6 +285,7 @@ var letterTouch = function letterTouch(e) {
   letter_flow_list = letter_flow_list.filter(function (letter) {
     return letter === e.target;
   });
+  loadLetter(e.target);
 };
 function randomLetter() {
   var result = '';
@@ -291,6 +293,12 @@ function randomLetter() {
   var charactersLength = characters.length;
   result += characters.charAt(Math.floor(Math.random() * charactersLength));
   return result;
+}
+function loadLetter(letele) {
+  (0, _qol.render)((0, _qol.find)(".slot-".concat(loaded_letters.length)), letele);
+  (0, _qol.remClass)(letele, ["inflow"]);
+  (0, _qol.style)(letele, "\n        transform:rotate(0deg);\n    ");
+  loaded_letters.push(letele);
 }
 
 },{"./qol":2}]},{},[1]);

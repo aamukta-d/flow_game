@@ -1,10 +1,10 @@
 let word_list = []
 let letter_flow_list = []
+let loaded_letters = []
 import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./qol"
 
 
 async function loadWords(){
-    
     const fileUrl = 'https://raw.githubusercontent.com/jmlewis/valett/master/scrabble/sowpods.txt' // provide file location
 
     const response = await fetch(fileUrl)
@@ -85,10 +85,10 @@ function letterElement(lett){
     let ele = create("span")
     ele.dataset.score = getLetterScore(letter)
     write(ele, letter)
-    addClass(ele,["tile"])
+    addClass(ele,["tile","inflow"])
     let rotation = (Math.random()*90)-45
     style(ele, `
-            transform:rotate(${rotation}deg)
+            transform:rotate(${rotation}deg);
         `)
     detect(ele, "click", letterTouch)
     letter_flow_list.push(ele)
@@ -98,6 +98,7 @@ function letterElement(lett){
 const letterTouch = (e)=>{
     remove(find(".letter-spawns"), e.target)
     letter_flow_list = letter_flow_list.filter(letter => letter === e.target);
+    loadLetter(e.target)
 }
 
 function randomLetter(){
@@ -106,6 +107,15 @@ function randomLetter(){
     const charactersLength = characters.length;
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
     return result;
+}
+
+function loadLetter(letele){
+    render(find(`.slot-${loaded_letters.length}`),letele)
+    remClass(letele,["inflow"])
+    style(letele, `
+        transform:rotate(0deg);
+    `)
+    loaded_letters.push(letele)
 }
 
 export {loadWords, letterElement, checkWordNow, word_list, randomLetter}

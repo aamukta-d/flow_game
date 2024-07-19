@@ -319,3 +319,13 @@ div#user-feedback {
    /* ems not rems, so we can scale down the tiles separate from the rest of the page */
    /* add the score to each tile */
 }
+
+.main-game{
+    position: absolute;
+    left:50vw;
+    top: 40vh;
+    transform: translate(-50%,-50%);
+    padding: 50px;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
