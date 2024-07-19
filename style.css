@@ -27,15 +27,13 @@ body {
 .waves {
     position: relative;
     width: 100%;
-    height: 15vh;
-    margin-bottom: -5px; 
+    margin-bottom: -8px; 
     min-height: 100px;
     max-height: 150px;
 }
 
 .content {
     position: relative;
-    height: 5vh;
     text-align: center;
     background-color: #33B2FF;
 }
@@ -64,6 +62,13 @@ body {
     animation-duration: 26s;
 }
 
+.tile{
+    animation-duration: 45s;
+    animation-name: moving-tiles;
+    background: none;
+    position: absolute;
+}
+
 @keyframes move-forever {
     0% {
         transform: translate3d(-90px, 0, 0);
@@ -73,7 +78,19 @@ body {
     }
 }
 
-.letter-spawns{
-    background: none;
-    position: absolute;
+@keyframes moving-tiles {
+    from {
+      translate: 0 0;
+      scale: 100% 1;
+    }
+  
+    to {
+      translate: 150vw 0;
+      scale: 100% 1;
+    }
 }
+
+
+
+
+
