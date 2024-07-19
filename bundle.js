@@ -28,12 +28,12 @@ function _start() {
   }));
   return _start.apply(this, arguments);
 }
-function game_loop() {
+var game_loop = function game_loop() {
   if (timer !== 0) {
-    (0, _qol.render)((0, _qol.find)(".letter-spawns"), (0, _scrabble.letterElement)("E"));
-    console.log("pl");
+    (0, _qol.render)((0, _qol.find)(".letter-spawns"), (0, _scrabble.letterElement)((0, _scrabble.randomLetter)()));
+    setTimeout(game_loop, 2000);
   }
-}
+};
 function end() {}
 start();
 game_loop();
@@ -167,6 +167,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.checkWordNow = checkWordNow;
 exports.letterElement = letterElement;
 exports.loadWords = loadWords;
+exports.randomLetter = randomLetter;
 exports.word_list = void 0;
 var _qol = require("./qol");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -271,7 +272,16 @@ function letterElement(lett) {
   ele.dataset.score = getLetterScore(letter);
   (0, _qol.write)(ele, letter);
   (0, _qol.addClass)(ele, ["tile"]);
+  var rotation = Math.random() * 90 - 45;
+  (0, _qol.style)(ele, "\n            transform:rotate(".concat(rotation, "deg)\n        "));
   return ele;
+}
+function randomLetter() {
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  var charactersLength = characters.length;
+  result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  return result;
 }
 
 },{"./qol":2}]},{},[1]);

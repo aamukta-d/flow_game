@@ -85,7 +85,19 @@ function letterElement(lett){
     ele.dataset.score = getLetterScore(letter)
     write(ele, letter)
     addClass(ele,["tile"])
+    let rotation = (Math.random()*90)-45
+    style(ele, `
+            transform:rotate(${rotation}deg)
+        `)
     return ele
 }
 
-export {loadWords, letterElement, checkWordNow, word_list}
+function randomLetter(){
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const charactersLength = characters.length;
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    return result;
+}
+
+export {loadWords, letterElement, checkWordNow, word_list, randomLetter}

@@ -1,4 +1,4 @@
-import {loadWords, checkWordNow, word_list, letterElement} from "./scripts/scrabble";
+import {loadWords, checkWordNow, word_list, letterElement, randomLetter} from "./scripts/scrabble";
 import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./scripts/qol"
 
 let timer = 1
@@ -8,11 +8,12 @@ async function start(){
     console.log(checkWordNow("aah"))
 }
 
-function game_loop(){
+const game_loop = () => {
+
 
     if (timer !== 0){
-        render(find(".letter-spawns"),letterElement("E"))
-        console.log("pl")
+        render(find(".letter-spawns"),letterElement(randomLetter()))
+        setTimeout(game_loop, 2000)
     }
 }
 
