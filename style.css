@@ -66,6 +66,7 @@ html {
     animation-duration: 26s;
 }
 
+<<<<<<< HEAD
 .letter-spawns {
     position: relative;
     width: 100%;
@@ -73,6 +74,12 @@ html {
 
 .tile{
     animation: tile-move 10s linear forwards;
+=======
+.inflow{
+    animation-duration: 45s;
+    animation-name: moving-tiles;
+    background: none;
+>>>>>>> 9bedb155d05deefd905d8dad3f951111b3ec79a7
     position: absolute;
     
     
