@@ -1,8 +1,24 @@
-import {loadWords, checkWordNow, word_list} from "./scripts/scrabble";
+import {loadWords, checkWordNow, word_list, letterElement} from "./scripts/scrabble";
+import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./scripts/qol"
 
-async function main_loop(){
+let timer = 1
+
+async function start(){
     await loadWords()
-    checkWordNow("funky")
+    console.log(checkWordNow("aah"))
 }
 
-main_loop()
+function game_loop(){
+
+    if (timer != 0){
+        render(find(".letter-spawns"),letterElement("E"))
+    }
+}
+
+function end(){
+
+}
+
+start()
+game_loop()
+end()
