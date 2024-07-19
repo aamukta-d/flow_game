@@ -19,8 +19,6 @@ function _start() {
           _context.next = 2;
           return (0, _scrabble.loadWords)();
         case 2:
-          console.log((0, _scrabble.checkWordNow)("aah"));
-        case 3:
         case "end":
           return _context.stop();
       }
@@ -28,9 +26,22 @@ function _start() {
   }));
   return _start.apply(this, arguments);
 }
+var observer = new IntersectionObserver(function (entries) {
+  entries.forEach(function (entry) {
+    if (entry.isIntersecting === false) {
+      // When the element is out of the viewport
+      entry.target.remove(); // Remove the element
+    }
+  });
+}, {
+  root: null,
+  // Use the viewport as the root
+  threshold: 0.1 // Trigger when 100% of the element is out of the viewport
+});
 var game_loop = function game_loop() {
   if (timer !== 0) {
-    (0, _qol.render)((0, _qol.find)(".letter-spawns"), (0, _scrabble.letterElement)((0, _scrabble.randomLetter)()));
+    var newLetter = (0, _scrabble.letterElement)((0, _scrabble.randomLetter)());
+    (0, _qol.render)((0, _qol.find)(".letter-spawns"), newLetter);
     setTimeout(game_loop, 2000);
   }
 };
@@ -273,7 +284,7 @@ function letterElement(lett) {
   (0, _qol.write)(ele, letter);
   (0, _qol.addClass)(ele, ["tile"]);
   var rotation = Math.random() * 90 - 45;
-  (0, _qol.style)(ele, "\n            transform:rotate(".concat(rotation, "deg)\n        "));
+  (0, _qol.style)(ele, "\n        position: absolute; /* Required for left to work */\n        left: -50vw; /* Ensure it starts from the left edge */\n        top: 0;\n        transform: rotate(".concat(rotation, "deg); /* Apply rotation */\n    "));
   return ele;
 }
 function randomLetter() {

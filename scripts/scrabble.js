@@ -87,8 +87,11 @@ function letterElement(lett){
     addClass(ele,["tile"])
     let rotation = (Math.random()*90)-45
     style(ele, `
-            transform:rotate(${rotation}deg)
-        `)
+        position: absolute; /* Required for left to work */
+        left: -50vw; /* Ensure it starts from the left edge */
+        top: 0;
+        transform: rotate(${rotation}deg); /* Apply rotation */
+    `)
     return ele
 }
 
