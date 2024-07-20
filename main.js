@@ -29,6 +29,7 @@ const observer = new IntersectionObserver((entries) => {
 const game_loop = () => {
     render(find(".letter-spawns"),letterElement(randomLetter()))
     cleanCards()
+    //console.log(getEventListeners(document.querySelectorAll('.tile')));
 }
 
 function end(){

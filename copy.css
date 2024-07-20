@@ -304,12 +304,37 @@ div#user-feedback {
 .blank-letters{
     display:flex;
     gap: 10px;
+}
+
+.hold-letters{
+    display:flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+
+.letterbox{
     padding: 50px;
     border: 1px solid gray;
 }
 
 .blank {
     background: lightgray;
+    border: 1px solid gray;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    height: 1.3em;
+    width: 1.3em;
+    padding-right: 0.1em;
+    border-radius: 5px;
+    position:relative;
+   /* ems not rems, so we can scale down the tiles separate from the rest of the page */
+   /* add the score to each tile */
+}
+
+.hold {
+    background: rgb(255, 255, 255);
     border: 1px solid gray;
     text-align: center;
     display: inline-block;
@@ -353,3 +378,26 @@ div#user-feedback {
 .top-bar{
     display: flex;
 }
+
+.tile.double-letter{
+    background: lightblue;
+    border: 1px solid rgb(87, 101, 173);
+}
+
+.tile.triple-letter{
+    background: cornflowerblue;
+    border: 1px solid rgb(51, 59, 103);
+}
+
+
+.tile.double-word{
+    background: salmon;
+    border: 1px solid rgb(133, 73, 60);
+}
+
+.tile.triple-word{
+    background: red;
+    border: 1px solid rgb(127, 0, 0);
+}
+
+

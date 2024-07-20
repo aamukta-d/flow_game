@@ -2,6 +2,8 @@ let word_list = []
 let letter_flow_list = []
 let loaded_letters = []
 let slots = []
+let words_submitted = []
+let word_modifiers = []
 import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./qol"
 
 
@@ -27,23 +29,25 @@ const submitWord = () => {
     loaded_letters.map((letter, index) => {
         word = word + letter.textContent
         remove(slots[index], letter);
+        word_modifiers.push(letter.dataset.modifier)
     })
     loaded_letters = []
     let score = checkWordNow(word.toLowerCase())
     if (score === 0){
         for (let i = 0; i < word.length; i++) {
-            render(find(".letter-spawns"),letterElement(word[i]))
+            render(find(".letter-spawns"),letterElement(word[i], [word_modifiers[i]]))
           }
     }
     else{
         const points = find(".points")
         write(points, parseInt(points.textContent)+score)
+        words_submitted.push(word)
     }
+    word_modifiers = []
 }
 
 function checkWordNow(word){
     let myword = word.toUpperCase()
-    console.log(myword)
     let total_score = 0
     if (word_list.includes(word)){
         for(let i = 0; i < myword.length; i++) {
@@ -105,17 +109,34 @@ function getLetterScore(letter){
      return score
 }
 
-function letterElement(lett){
+function letterElement(lett, modifier = []){
     let letter = lett.toUpperCase()
     let ele = create("span")
     ele.dataset.score = getLetterScore(letter)
     write(ele, letter)
     addClass(ele,["tile","inflow"])
-    let rotation = (Math.random()*90)-45
+    let rotation = Math.floor(Math.random()*60)-30
+    let top = Math.floor(Math.random()*-75)
+    let tile_type = Math.floor(Math.random()*15*15)
+    let tile_mod = "single-letter"
+    if ((modifier.length===0 & tile_type < 8) || modifier.includes("triple-word")){
+        tile_mod = "triple-word"
+    }
+    else if ((modifier.length===0 &tile_type < 8+16) || modifier.includes("double-word")){
+        tile_mod = "double-word"
+    }
+    else if ((modifier.length===0 &tile_type < 8+16+12) || modifier.includes("triple-letter")){
+        tile_mod = "triple-letter"
+    }
+    else if ((modifier.length===0 &tile_type < 8+16+12+24) || modifier.includes("double-letter")){
+        tile_mod = "double-letter"
+    }
+    addClass(ele,[tile_mod])
+    ele.dataset.modifier = tile_mod
     style(ele, `
         position: absolute; 
         left: 5vw; 
-        top: 0;
+        top: ${top}px;
         transform: rotate(${rotation}deg);
     `)
     detect(ele, "click", letterTouch)
@@ -124,8 +145,9 @@ function letterElement(lett){
 }
 
 const letterTouch = (e)=>{
-    undetect(e.target, "click", letterTouch)
-    if (letter_flow_list.length < 7){    
+    console.log ("touch")
+    if (loaded_letters.length < 8){   
+        undetect(e.target, "click", letterTouch) 
         remove(find(".letter-spawns"), e.target)
         letter_flow_list = letter_flow_list.filter(letter => letter === e.target);
         loadLetter(e.target)
@@ -134,8 +156,9 @@ const letterTouch = (e)=>{
 }
 
 const letterRem = (e) =>{
+    console.log ("rem")
+    undetect(e.target, "click", letterRem)
     const index = loaded_letters.indexOf(e.target)
-    console.log(index)
     remove(find(`.slot-${index}`),e.target)
     for (let i = index + 1; i<loaded_letters.length; i++){
         const temp = loaded_letters[i]
@@ -144,8 +167,7 @@ const letterRem = (e) =>{
         loaded_letters[i-1] = temp
     }
     loaded_letters.pop()
-    console.log(loaded_letters)
-    render(find(".letter-spawns"),letterElement(e.target.textContent))
+    render(find(".letter-spawns"),letterElement(e.target.textContent, [e.target.dataset.modifier]))
 }
 
 function randomLetter(){
@@ -182,4 +204,4 @@ function checkOffScreen(el) {
            )
   }
 
-export {loadWords, letterElement, checkWordNow, word_list, randomLetter, cleanCards}
+export {loadWords, letterElement, checkWordNow, word_list, randomLetter, cleanCards, words_submitted}
