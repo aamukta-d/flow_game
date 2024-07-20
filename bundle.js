@@ -189,12 +189,14 @@ var holds = [];
 var words_submitted = exports.words_submitted = [];
 var word_modifiers = [];
 var held_letters = [];
+var hook_icon = (0, _qol.create)("img");
+var replace_icon_list = [];
 function loadWords() {
   return _loadWords.apply(this, arguments);
 }
 function _loadWords() {
   _loadWords = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var fileUrl, response, data, word_list_temp;
+    var fileUrl, response, data, word_list_temp, i;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -218,7 +220,14 @@ function _loadWords() {
           exports.word_list = word_list = word_list_temp.map(function (word) {
             return word.toLowerCase();
           });
-        case 12:
+          hook_icon.src = "./hook.png";
+          (0, _qol.addClass)(hook_icon, ["hook-icon"]);
+          for (i = 0; i < 8; i++) {
+            replace_icon_list.push((0, _qol.create)("img"));
+            replace_icon_list[i].src = "./replace.png";
+            (0, _qol.addClass)(replace_icon_list[i], ["replace-icon"]);
+          }
+        case 15:
         case "end":
           return _context.stop();
       }
@@ -231,6 +240,7 @@ var submitWord = function submitWord() {
   loaded_letters.map(function (letter, index) {
     word = word + letter.textContent;
     (0, _qol.remove)(slots[index], letter);
+    (0, _qol.remove)(slots[index], hook_icon);
     word_modifiers.push(letter.dataset.modifier);
   });
   var score = checkWordNow(word.toLowerCase());
@@ -244,10 +254,12 @@ var submitWord = function submitWord() {
     words_submitted.push(word);
     held_letters.map(function (letter, index) {
       (0, _qol.remove)((0, _qol.find)(".hold-".concat(index)), letter);
+      (0, _qol.remove)(holds[index], hook_icon);
     });
     held_letters = [];
     loaded_letters.map(function (letter, index) {
       held_letters.push(letter);
+      letter.dataset.hooked = "false";
       (0, _qol.render)((0, _qol.find)(".hold-".concat(index)), letter);
       (0, _qol.detect)(letter, "click", letterHook);
       (0, _qol.undetect)(letter, "click", letterRem);
@@ -255,7 +267,20 @@ var submitWord = function submitWord() {
   }
   word_modifiers = [];
   loaded_letters = [];
+  remove_replaces();
 };
+function remove_replaces() {
+  held_letters.map(function (letter, index) {
+    (0, _qol.remove)(holds[index], replace_icon_list[index]);
+  });
+}
+function add_replaces() {
+  held_letters.map(function (letter, index) {
+    if (letter !== "hooked") {
+      (0, _qol.render)(holds[index], replace_icon_list[index]);
+    }
+  });
+}
 var letterHook = function letterHook(e) {
   console.log("hook");
   var index = loaded_letters.map(function (letter) {
@@ -270,10 +295,14 @@ var letterHook = function letterHook(e) {
     held_letters[index2] = letter;
     (0, _qol.render)(holds[index2], letter);
     (0, _qol.remove)(slots[index], letter);
+    (0, _qol.remove)(slots[index], hook_icon);
     held_letters[index3] = "hooked";
     (0, _qol.render)(slots[index], e.target);
+    (0, _qol.render)(slots[index], hook_icon);
     loaded_letters[index] = e.target;
     e.target.dataset.hooked = "true";
+    remove_replaces();
+    add_replaces();
   } else {
     if (e.target.dataset.hooked === "false") {
       console.log(1);
@@ -282,7 +311,10 @@ var letterHook = function letterHook(e) {
         (0, _qol.remove)(holds[_index], e.target);
         held_letters[_index] = "hooked";
         loadLetter(e.target);
+        (0, _qol.render)(slots[loaded_letters.length - 1], hook_icon);
         e.target.dataset.hooked = "true";
+        remove_replaces();
+        add_replaces();
       }
     } else {
       console.log(2);
@@ -292,6 +324,7 @@ var letterHook = function letterHook(e) {
       e.target.dataset.hooked = "false";
       (0, _qol.render)(holds[_index3], e.target);
       (0, _qol.remove)(slots[_index2], e.target);
+      (0, _qol.remove)(slots[_index2], hook_icon);
       for (var i = _index2 + 1; i < loaded_letters.length; i++) {
         var temp = loaded_letters[i];
         (0, _qol.remove)((0, _qol.find)(".slot-".concat(i)), temp);
@@ -299,6 +332,7 @@ var letterHook = function letterHook(e) {
         loaded_letters[i - 1] = temp;
       }
       loaded_letters.pop();
+      remove_replaces();
     }
   }
 };

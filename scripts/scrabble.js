@@ -1,3 +1,5 @@
+import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./qol"
+
 let word_list = []
 let letter_flow_list = []
 let loaded_letters = []
@@ -6,7 +8,8 @@ let holds = []
 let words_submitted = []
 let word_modifiers = []
 let held_letters = []
-import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./qol"
+const hook_icon = create("img")
+let replace_icon_list = []
 
 
 async function loadWords(){
@@ -27,6 +30,13 @@ async function loadWords(){
         return word.toLowerCase()
     })
 
+    hook_icon.src = "./hook.png"
+    addClass(hook_icon, ["hook-icon"])
+    for(let i = 0; i < 8; i++){
+        replace_icon_list.push(create("img"))
+        replace_icon_list[i].src = "./replace.png"
+        addClass(replace_icon_list[i], ["replace-icon"])
+    }
 }
 
 const submitWord = () => {
@@ -34,6 +44,7 @@ const submitWord = () => {
     loaded_letters.map((letter, index) => {
         word = word + letter.textContent
         remove(slots[index], letter);
+        remove(slots[index], hook_icon);
         word_modifiers.push(letter.dataset.modifier)
     })
     let score = checkWordNow(word.toLowerCase())
@@ -48,10 +59,12 @@ const submitWord = () => {
         words_submitted.push(word)
         held_letters.map((letter, index) => {
             remove(find(`.hold-${index}`), letter)
+            remove(holds[index], hook_icon);
         })
         held_letters = []
         loaded_letters.map((letter, index)=>{
             held_letters.push(letter)
+            letter.dataset.hooked = "false"
             render(find(`.hold-${index}`), letter)
             detect(letter, "click", letterHook)
             undetect(letter, "click", letterRem)
@@ -59,6 +72,21 @@ const submitWord = () => {
     }
     word_modifiers = []
     loaded_letters = []
+    remove_replaces()
+}
+
+function remove_replaces(){
+    held_letters.map((letter, index) => {
+        remove(holds[index], replace_icon_list[index]);
+    })
+}
+
+function add_replaces(){
+    held_letters.map((letter, index) => {
+        if (letter !== "hooked"){
+            render(holds[index], replace_icon_list[index]);
+        }
+    })   
 }
 
 const letterHook = (e) => {
@@ -73,10 +101,14 @@ const letterHook = (e) => {
         held_letters[index2] = letter
         render(holds[index2], letter)
         remove(slots[index], letter)
+        remove(slots[index], hook_icon)
         held_letters[index3] = "hooked"
         render(slots[index], e.target)
+        render(slots[index], hook_icon)
         loaded_letters[index] = e.target
         e.target.dataset.hooked = "true"
+        remove_replaces()
+        add_replaces()
     }
     else{
         if (e.target.dataset.hooked === "false"){
@@ -86,7 +118,10 @@ const letterHook = (e) => {
                 remove(holds[index], e.target)
                 held_letters[index] = "hooked"
                 loadLetter(e.target)
+                render(slots[loaded_letters.length-1], hook_icon)
                 e.target.dataset.hooked = "true"
+                remove_replaces()
+                add_replaces()
             }
         } else{
             console.log(2)
@@ -96,6 +131,7 @@ const letterHook = (e) => {
             e.target.dataset.hooked = "false"
             render(holds[index2], e.target)
             remove(slots[index], e.target)
+            remove(slots[index], hook_icon)
             for (let i = index + 1; i<loaded_letters.length; i++){
                 const temp = loaded_letters[i]
                 remove(find(`.slot-${i}`),temp)
@@ -103,6 +139,7 @@ const letterHook = (e) => {
                 loaded_letters[i-1] = temp
             }
             loaded_letters.pop()
+            remove_replaces()
         }
     }
 }

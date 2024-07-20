@@ -400,4 +400,16 @@ div#user-feedback {
     border: 1px solid rgb(127, 0, 0);
 }
 
+.hook-icon{
+    position:absolute;
+    width: auto;
+    height: 30px;
+    transform: translate(-30px, -55px);
+}
 
+.replace-icon{
+    position:absolute;
+    width: auto;
+    height: 25px;
+    transform: translate(-32px, -58px);
+}
