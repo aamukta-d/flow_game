@@ -1,4 +1,5 @@
 import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./qol"
+import { game_running } from "../main"
 
 let word_list = []
 let letter_flow_list = []
@@ -10,6 +11,7 @@ let word_modifiers = []
 let held_letters = []
 const hook_icon = create("img")
 let replace_icon_list = []
+let formatted_words = []
 
 
 async function loadWords(){
@@ -41,11 +43,17 @@ async function loadWords(){
 
 const submitWord = () => {
     let word = ''
+    let formatted_word = []
     loaded_letters.map((letter, index) => {
         word = word + letter.textContent
         remove(slots[index], letter);
         remove(slots[index], hook_icon);
         word_modifiers.push(letter.dataset.modifier)
+        formatted_word.push({
+            letter: letter.textContent,
+            modifier: letter.dataset.modifier,
+            hooked: letter.dataset.hooked === "true" ? true : false
+        })
     })
     let score = checkWordNow(word.toLowerCase())
     if (score === 0){
@@ -57,6 +65,7 @@ const submitWord = () => {
         const points = find(".points")
         write(points, parseInt(points.textContent)+score)
         words_submitted.push(word)
+        formatted_words.push(formatted_words)
         held_letters.map((letter, index) => {
             remove(find(`.hold-${index}`), letter)
             remove(holds[index], hook_icon);
@@ -245,6 +254,7 @@ function letterElement(lett, modifier = []){
 }
 
 const letterTouch = (e)=>{
+    if (game_running === true){   
     console.log ("touch")
     if (loaded_letters.length < 8){   
         undetect(e.target, "click", letterTouch) 
@@ -252,6 +262,7 @@ const letterTouch = (e)=>{
         letter_flow_list = letter_flow_list.filter(letter => letter === e.target);
         loadLetter(e.target)
         detect(e.target, "click", letterRem)
+    }
     }
 }
 
@@ -304,4 +315,4 @@ function checkOffScreen(el) {
            )
   }
 
-export {loadWords, letterElement, checkWordNow, word_list, randomLetter, cleanCards, words_submitted}
+export {loadWords, letterElement, checkWordNow, word_list, randomLetter, cleanCards, words_submitted, formatted_words}

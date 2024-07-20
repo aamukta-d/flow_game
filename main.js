@@ -1,8 +1,9 @@
-import {loadWords, checkWordNow, word_list, letterElement, randomLetter, cleanCards} from "./scripts/scrabble";
+import {loadWords, letterElement, randomLetter, cleanCards, formatted_words} from "./scripts/scrabble";
 import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./scripts/qol"
 import { real_time_left, timer, startTimer } from "./scripts/timer";
 
 let loop = ""
+let game_running = false
 
 async function start(){
     await loadWords()
@@ -29,3 +30,5 @@ function end(){
 start()
 game_loop()
 end()
+
+export{game_running}
