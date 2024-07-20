@@ -259,7 +259,7 @@ var submitWord = function submitWord() {
       hooked: letter.dataset.hooked === "true" ? true : false
     });
   });
-  var score = checkWordNow(word.toLowerCase());
+  var score = checkWordNow(word.toLowerCase(), formatted_word);
   if (score === 0) {
     for (var i = 0; i < word.length; i++) {
       (0, _qol.render)((0, _qol.find)(".letter-spawns"), letterElement(word[i], [word_modifiers[i]]));
@@ -320,6 +320,7 @@ function upgrade_letter(ele) {
       break;
   }
   (0, _qol.addClass)(ele, [new_modifier]);
+  ele.dataset.modifier = new_modifier;
 }
 function downgrade_letter(ele) {
   var new_modifier = ele.dataset.modifier;
@@ -342,6 +343,7 @@ function downgrade_letter(ele) {
       break;
   }
   (0, _qol.addClass)(ele, [new_modifier]);
+  ele.dataset.modifier = new_modifier;
 }
 var letterHook = function letterHook(e) {
   console.log("hook");
@@ -399,16 +401,37 @@ var letterHook = function letterHook(e) {
     }
   }
 };
-function checkWordNow(word) {
+function checkWordNow(word, formatted_word) {
   var myword = word.toUpperCase();
   var total_score = 0;
+  var multipler = 1;
   if (word_list.includes(word)) {
-    for (var i = 0; i < myword.length; i++) {
-      var letter = myword[i];
+    formatted_word.forEach(function (lett) {
+      var letter = lett.letter;
       var score = getLetterScore(letter);
+      switch (lett.modifier) {
+        case "triple-letter":
+          score = score * 3;
+          break;
+        case "quad-letter":
+          score = score * 4;
+          break;
+        case "double-letter":
+          score = score * 2;
+          break;
+        case "triple-word":
+          multipler = multipler * 3;
+          break;
+        case "quad-word":
+          multipler = multipler * 4;
+          break;
+        case "double-word":
+          multipler = multipler * 2;
+          break;
+      }
       total_score += score;
-    }
-    return total_score;
+    });
+    return total_score * multipler;
   } else {
     return 0;
   }

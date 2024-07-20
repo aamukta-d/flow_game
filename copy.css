@@ -416,12 +416,12 @@ div#user-feedback {
     position:absolute;
     width: auto;
     height: 30px;
-    transform: translate(-30px, -55px);
+    transform: translate(-0.9em, -1.6em);
 }
 
 .replace-icon{
     position:absolute;
     width: auto;
     height: 25px;
-    transform: translate(-32px, -58px);
+    transform: translate(-0.9em, -1.7em);
 }
