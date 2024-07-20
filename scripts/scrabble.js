@@ -12,6 +12,7 @@ let held_letters = []
 const hook_icon = create("img")
 let replace_icon_list = []
 let formatted_words = []
+let points = 0
 
 
 async function loadWords(){
@@ -62,8 +63,9 @@ const submitWord = () => {
           }
     }
     else{
-        const points = find(".points")
-        write(points, parseInt(points.textContent)+score)
+        const point_text = find(".points")
+        points += score
+        write(point_text, points)
         words_submitted.push(word)
         formatted_words.push(formatted_words)
         held_letters.map((letter, index) => {
@@ -98,21 +100,70 @@ function add_replaces(){
     })   
 }
 
+function upgrade_letter(ele){
+    let new_modifier = ele.dataset.modifier
+    remClass(ele, [new_modifier])
+    switch(ele.dataset.modifier){
+        case "single-letter":
+            new_modifier = "double-letter"
+            break
+        case "double-letter":
+            new_modifier = "triple-letter"
+            break
+        case "triple-letter":
+            new_modifier = "quad-letter"
+            break
+        case "double-word":
+            new_modifier = "triple-word"
+            break
+        case "triple-word":
+            new_modifier = "quad-word"
+            break
+    }
+    addClass(ele, [new_modifier])
+}
+
+
+function downgrade_letter(ele){
+    let new_modifier = ele.dataset.modifier
+    remClass(ele, [new_modifier])
+    switch(ele.dataset.modifier){
+        case "triple-letter":
+            new_modifier = "double-letter"
+            break
+        case "quad-letter":
+            new_modifier = "triple-letter"
+            break
+        case "double-letter":
+            new_modifier = "single-letter"
+            break
+        case "triple-word":
+            new_modifier = "double-word"
+            break
+        case "quad-word":
+            new_modifier = "triple-word"
+            break
+    }
+    addClass(ele, [new_modifier])
+}
+
+
 const letterHook = (e) => {
     console.log("hook")
     const index = loaded_letters.map((letter)=>{return letter.dataset.hooked}).indexOf("true");
     if (index != -1 && e.target.dataset.hooked === "false"){
-        console.log(3)
         const index2 = held_letters.indexOf("hooked")
         const index3 = held_letters.indexOf(e.target)
         const letter = loaded_letters[index]
         letter.dataset.hooked = "false"
         held_letters[index2] = letter
         render(holds[index2], letter)
+        downgrade_letter(letter)
         remove(slots[index], letter)
         remove(slots[index], hook_icon)
         held_letters[index3] = "hooked"
         render(slots[index], e.target)
+        upgrade_letter(e.target)
         render(slots[index], hook_icon)
         loaded_letters[index] = e.target
         e.target.dataset.hooked = "true"
@@ -121,7 +172,6 @@ const letterHook = (e) => {
     }
     else{
         if (e.target.dataset.hooked === "false"){
-            console.log(1)
             if (loaded_letters.length < 8){
                 let index = held_letters.indexOf(e.target)
                 remove(holds[index], e.target)
@@ -129,16 +179,17 @@ const letterHook = (e) => {
                 loadLetter(e.target)
                 render(slots[loaded_letters.length-1], hook_icon)
                 e.target.dataset.hooked = "true"
+                upgrade_letter(e.target)
                 remove_replaces()
                 add_replaces()
             }
         } else{
-            console.log(2)
             const index = loaded_letters.indexOf(e.target)
             const index2 = held_letters.indexOf("hooked")    
             held_letters[index2] = e.target
             e.target.dataset.hooked = "false"
             render(holds[index2], e.target)
+            downgrade_letter(e.target)
             remove(slots[index], e.target)
             remove(slots[index], hook_icon)
             for (let i = index + 1; i<loaded_letters.length; i++){
@@ -315,4 +366,4 @@ function checkOffScreen(el) {
            )
   }
 
-export {loadWords, letterElement, checkWordNow, word_list, randomLetter, cleanCards, words_submitted, formatted_words}
+export {loadWords, letterElement, checkWordNow, word_list, randomLetter, cleanCards, words_submitted, formatted_words, points}
