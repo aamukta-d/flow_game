@@ -1,7 +1,10 @@
+import { makeChart } from "./game-chart";
+
 let countdown;
 let real_time_left =1000;
 const timerDisplay = document.querySelector('.timer');
 const popup = document.getElementById("popup")
+
 //const endTime = document.querySelector('.display__end-time');
 //const buttons = document.querySelectorAll('[data-time]');
 
@@ -68,6 +71,8 @@ document.customForm.addEventListener('submit', function(e) {
 
 function showPopup(){
   popup.style.display = 'block';
+  makeChart([1,2,3]);
 }
 
 export {startTimer, timer ,real_time_left}
+
