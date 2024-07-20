@@ -2,8 +2,10 @@ let word_list = []
 let letter_flow_list = []
 let loaded_letters = []
 let slots = []
+let holds = []
 let words_submitted = []
 let word_modifiers = []
+let held_letters = []
 import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./qol"
 
 
@@ -11,6 +13,9 @@ async function loadWords(){
     detect(find(".submit"),"click",submitWord)
     findAll(".blank").forEach((slot) =>{
         slots.push(slot)
+    })
+    findAll(".hold").forEach((slot) =>{
+        holds.push(slot)
     })
 
     const fileUrl = 'https://raw.githubusercontent.com/jmlewis/valett/master/scrabble/sowpods.txt' // provide file location
@@ -31,7 +36,6 @@ const submitWord = () => {
         remove(slots[index], letter);
         word_modifiers.push(letter.dataset.modifier)
     })
-    loaded_letters = []
     let score = checkWordNow(word.toLowerCase())
     if (score === 0){
         for (let i = 0; i < word.length; i++) {
@@ -42,8 +46,65 @@ const submitWord = () => {
         const points = find(".points")
         write(points, parseInt(points.textContent)+score)
         words_submitted.push(word)
+        held_letters.map((letter, index) => {
+            remove(find(`.hold-${index}`), letter)
+        })
+        held_letters = []
+        loaded_letters.map((letter, index)=>{
+            held_letters.push(letter)
+            render(find(`.hold-${index}`), letter)
+            detect(letter, "click", letterHook)
+            undetect(letter, "click", letterRem)
+        })        
     }
     word_modifiers = []
+    loaded_letters = []
+}
+
+const letterHook = (e) => {
+    console.log("hook")
+    const index = loaded_letters.map((letter)=>{return letter.dataset.hooked}).indexOf("true");
+    if (index != -1 && e.target.dataset.hooked === "false"){
+        console.log(3)
+        const index2 = held_letters.indexOf("hooked")
+        const index3 = held_letters.indexOf(e.target)
+        const letter = loaded_letters[index]
+        letter.dataset.hooked = "false"
+        held_letters[index2] = letter
+        render(holds[index2], letter)
+        remove(slots[index], letter)
+        held_letters[index3] = "hooked"
+        render(slots[index], e.target)
+        loaded_letters[index] = e.target
+        e.target.dataset.hooked = "true"
+    }
+    else{
+        if (e.target.dataset.hooked === "false"){
+            console.log(1)
+            if (loaded_letters.length < 8){
+                let index = held_letters.indexOf(e.target)
+                remove(holds[index], e.target)
+                held_letters[index] = "hooked"
+                loadLetter(e.target)
+                e.target.dataset.hooked = "true"
+            }
+        } else{
+            console.log(2)
+            const index = loaded_letters.indexOf(e.target)
+            const index2 = held_letters.indexOf("hooked")    
+            held_letters[index2] = e.target
+            e.target.dataset.hooked = "false"
+            render(holds[index2], e.target)
+            remove(slots[index], e.target)
+            for (let i = index + 1; i<loaded_letters.length; i++){
+                const temp = loaded_letters[i]
+                remove(find(`.slot-${i}`),temp)
+                render(find(`.slot-${i-1}`),temp)
+                loaded_letters[i-1] = temp
+            }
+            loaded_letters.pop()
+        }
+    }
 }
 
 function checkWordNow(word){
@@ -113,10 +174,12 @@ function letterElement(lett, modifier = []){
     let letter = lett.toUpperCase()
     let ele = create("span")
     ele.dataset.score = getLetterScore(letter)
+    ele.dataset.hooked = false
     write(ele, letter)
     addClass(ele,["tile","inflow"])
     let rotation = Math.floor(Math.random()*60)-30
-    let top = Math.floor(Math.random()*-75)
+    let translation = Math.floor(Math.random()*200)
+    let top = Math.floor(Math.random()*-40)-25
     let tile_type = Math.floor(Math.random()*15*15)
     let tile_mod = "single-letter"
     if ((modifier.length===0 & tile_type < 8) || modifier.includes("triple-word")){
@@ -137,7 +200,7 @@ function letterElement(lett, modifier = []){
         position: absolute; 
         left: 5vw; 
         top: ${top}px;
-        transform: rotate(${rotation}deg);
+        transform: rotate(${rotation}deg) translate(-${translation}px,0px);
     `)
     detect(ele, "click", letterTouch)
     letter_flow_list.push(ele)
@@ -155,9 +218,9 @@ const letterTouch = (e)=>{
     }
 }
 
+
 const letterRem = (e) =>{
     console.log ("rem")
-    undetect(e.target, "click", letterRem)
     const index = loaded_letters.indexOf(e.target)
     remove(find(`.slot-${index}`),e.target)
     for (let i = index + 1; i<loaded_letters.length; i++){
@@ -200,7 +263,7 @@ function cleanCards(){
 
 function checkOffScreen(el) {
     return (
-            (el.offsetLeft > document.body.offsetWidth)
+            (el.offsetLeft > document.body.offsetWidth + 200)
            )
   }
 

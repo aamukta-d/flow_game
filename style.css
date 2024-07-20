@@ -104,7 +104,7 @@ html {
         left: -5vw;
       }
     to {
-        left: 105vw;
+        left: calc(100vw + 220px);
       }
     
 }

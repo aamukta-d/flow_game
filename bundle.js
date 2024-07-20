@@ -185,8 +185,10 @@ var word_list = exports.word_list = [];
 var letter_flow_list = [];
 var loaded_letters = [];
 var slots = [];
+var holds = [];
 var words_submitted = exports.words_submitted = [];
 var word_modifiers = [];
+var held_letters = [];
 function loadWords() {
   return _loadWords.apply(this, arguments);
 }
@@ -200,20 +202,23 @@ function _loadWords() {
           (0, _qol.findAll)(".blank").forEach(function (slot) {
             slots.push(slot);
           });
+          (0, _qol.findAll)(".hold").forEach(function (slot) {
+            holds.push(slot);
+          });
           fileUrl = 'https://raw.githubusercontent.com/jmlewis/valett/master/scrabble/sowpods.txt'; // provide file location
-          _context.next = 5;
+          _context.next = 6;
           return fetch(fileUrl);
-        case 5:
+        case 6:
           response = _context.sent;
-          _context.next = 8;
+          _context.next = 9;
           return response.text();
-        case 8:
+        case 9:
           data = _context.sent;
           word_list_temp = data.split("\r\n");
           exports.word_list = word_list = word_list_temp.map(function (word) {
             return word.toLowerCase();
           });
-        case 11:
+        case 12:
         case "end":
           return _context.stop();
       }
@@ -228,7 +233,6 @@ var submitWord = function submitWord() {
     (0, _qol.remove)(slots[index], letter);
     word_modifiers.push(letter.dataset.modifier);
   });
-  loaded_letters = [];
   var score = checkWordNow(word.toLowerCase());
   if (score === 0) {
     for (var i = 0; i < word.length; i++) {
@@ -238,8 +242,65 @@ var submitWord = function submitWord() {
     var points = (0, _qol.find)(".points");
     (0, _qol.write)(points, parseInt(points.textContent) + score);
     words_submitted.push(word);
+    held_letters.map(function (letter, index) {
+      (0, _qol.remove)((0, _qol.find)(".hold-".concat(index)), letter);
+    });
+    held_letters = [];
+    loaded_letters.map(function (letter, index) {
+      held_letters.push(letter);
+      (0, _qol.render)((0, _qol.find)(".hold-".concat(index)), letter);
+      (0, _qol.detect)(letter, "click", letterHook);
+      (0, _qol.undetect)(letter, "click", letterRem);
+    });
   }
   word_modifiers = [];
+  loaded_letters = [];
+};
+var letterHook = function letterHook(e) {
+  console.log("hook");
+  var index = loaded_letters.map(function (letter) {
+    return letter.dataset.hooked;
+  }).indexOf("true");
+  if (index != -1 && e.target.dataset.hooked === "false") {
+    console.log(3);
+    var index2 = held_letters.indexOf("hooked");
+    var index3 = held_letters.indexOf(e.target);
+    var letter = loaded_letters[index];
+    letter.dataset.hooked = "false";
+    held_letters[index2] = letter;
+    (0, _qol.render)(holds[index2], letter);
+    (0, _qol.remove)(slots[index], letter);
+    held_letters[index3] = "hooked";
+    (0, _qol.render)(slots[index], e.target);
+    loaded_letters[index] = e.target;
+    e.target.dataset.hooked = "true";
+  } else {
+    if (e.target.dataset.hooked === "false") {
+      console.log(1);
+      if (loaded_letters.length < 8) {
+        var _index = held_letters.indexOf(e.target);
+        (0, _qol.remove)(holds[_index], e.target);
+        held_letters[_index] = "hooked";
+        loadLetter(e.target);
+        e.target.dataset.hooked = "true";
+      }
+    } else {
+      console.log(2);
+      var _index2 = loaded_letters.indexOf(e.target);
+      var _index3 = held_letters.indexOf("hooked");
+      held_letters[_index3] = e.target;
+      e.target.dataset.hooked = "false";
+      (0, _qol.render)(holds[_index3], e.target);
+      (0, _qol.remove)(slots[_index2], e.target);
+      for (var i = _index2 + 1; i < loaded_letters.length; i++) {
+        var temp = loaded_letters[i];
+        (0, _qol.remove)((0, _qol.find)(".slot-".concat(i)), temp);
+        (0, _qol.render)((0, _qol.find)(".slot-".concat(i - 1)), temp);
+        loaded_letters[i - 1] = temp;
+      }
+      loaded_letters.pop();
+    }
+  }
 };
 function checkWordNow(word) {
   var myword = word.toUpperCase();
@@ -306,10 +367,12 @@ function letterElement(lett) {
   var letter = lett.toUpperCase();
   var ele = (0, _qol.create)("span");
   ele.dataset.score = getLetterScore(letter);
+  ele.dataset.hooked = false;
   (0, _qol.write)(ele, letter);
   (0, _qol.addClass)(ele, ["tile", "inflow"]);
   var rotation = Math.floor(Math.random() * 60) - 30;
-  var top = Math.floor(Math.random() * -75);
+  var translation = Math.floor(Math.random() * 200);
+  var top = Math.floor(Math.random() * -40) - 25;
   var tile_type = Math.floor(Math.random() * 15 * 15);
   var tile_mod = "single-letter";
   if (modifier.length === 0 & tile_type < 8 || modifier.includes("triple-word")) {
@@ -323,7 +386,7 @@ function letterElement(lett) {
   }
   (0, _qol.addClass)(ele, [tile_mod]);
   ele.dataset.modifier = tile_mod;
-  (0, _qol.style)(ele, "\n        position: absolute; \n        left: 5vw; \n        top: ".concat(top, "px;\n        transform: rotate(").concat(rotation, "deg);\n    "));
+  (0, _qol.style)(ele, "\n        position: absolute; \n        left: 5vw; \n        top: ".concat(top, "px;\n        transform: rotate(").concat(rotation, "deg) translate(-").concat(translation, "px,0px);\n    "));
   (0, _qol.detect)(ele, "click", letterTouch);
   letter_flow_list.push(ele);
   return ele;
@@ -342,7 +405,6 @@ var letterTouch = function letterTouch(e) {
 };
 var letterRem = function letterRem(e) {
   console.log("rem");
-  (0, _qol.undetect)(e.target, "click", letterRem);
   var index = loaded_letters.indexOf(e.target);
   (0, _qol.remove)((0, _qol.find)(".slot-".concat(index)), e.target);
   for (var i = index + 1; i < loaded_letters.length; i++) {
@@ -377,7 +439,7 @@ function cleanCards() {
   }
 }
 function checkOffScreen(el) {
-  return el.offsetLeft > document.body.offsetWidth;
+  return el.offsetLeft > document.body.offsetWidth + 200;
 }
 
 },{"./qol":2}],4:[function(require,module,exports){
