@@ -15,16 +15,6 @@ async function start(){
     }
 }
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting === false) { // When the element is out of the viewport
-            entry.target.remove(); // Remove the element
-        }
-    });
-}, {
-    root: null, // Use the viewport as the root
-    threshold: 0.1 // Trigger when 100% of the element is out of the viewport
-});
 
 const game_loop = () => {
     render(find(".letter-spawns"),letterElement(randomLetter()))

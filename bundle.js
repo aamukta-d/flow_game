@@ -35,18 +35,6 @@ function _start() {
   }));
   return _start.apply(this, arguments);
 }
-var observer = new IntersectionObserver(function (entries) {
-  entries.forEach(function (entry) {
-    if (entry.isIntersecting === false) {
-      // When the element is out of the viewport
-      entry.target.remove(); // Remove the element
-    }
-  });
-}, {
-  root: null,
-  // Use the viewport as the root
-  threshold: 0.1 // Trigger when 100% of the element is out of the viewport
-});
 var game_loop = function game_loop() {
   (0, _qol.render)((0, _qol.find)(".letter-spawns"), (0, _scrabble.letterElement)((0, _scrabble.randomLetter)()));
   (0, _scrabble.cleanCards)();
@@ -383,6 +371,7 @@ exports.timer = timer;
 var countdown;
 var real_time_left = exports.real_time_left = 1000;
 var timerDisplay = document.querySelector('.timer');
+var popup = document.getElementById("popup");
 //const endTime = document.querySelector('.display__end-time');
 //const buttons = document.querySelectorAll('[data-time]');
 
@@ -401,6 +390,7 @@ function timer(seconds) {
     // Stop the timer when it reaches zero
     if (secondsLeft < 0) {
       clearInterval(countdown);
+      showPopup();
       return;
     }
     displayTimeLeft(secondsLeft);
@@ -435,5 +425,9 @@ document.customForm.addEventListener('submit', function(e) {
   this.reset();
 });
 */
+
+function showPopup() {
+  popup.style.display = 'block';
+}
 
 },{}]},{},[1]);

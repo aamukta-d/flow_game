@@ -85,6 +85,19 @@ html {
 
 }
 
+#popup {
+    display: none; 
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 80vh;
+    height: 40vh;
+    overflow: auto;
+    background-color: #33B2FF; 
+    padding-top: 60px;
+  }
+
 @keyframes tile-move {
 
     from {
