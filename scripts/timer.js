@@ -1,6 +1,7 @@
 let countdown;
 let real_time_left =1000;
 const timerDisplay = document.querySelector('.timer');
+const popup = document.getElementById("popup")
 //const endTime = document.querySelector('.display__end-time');
 //const buttons = document.querySelectorAll('[data-time]');
 
@@ -23,6 +24,7 @@ function timer(seconds) {
     // Stop the timer when it reaches zero
     if (secondsLeft < 0) {
       clearInterval(countdown);
+      showPopup();
       return;
     }
     displayTimeLeft(secondsLeft);
@@ -63,5 +65,9 @@ document.customForm.addEventListener('submit', function(e) {
   this.reset();
 });
 */
+
+function showPopup(){
+  popup.style.display = 'block';
+}
 
 export {startTimer, timer ,real_time_left}
