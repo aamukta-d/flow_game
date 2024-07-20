@@ -113,8 +113,11 @@ function letterElement(lett){
     addClass(ele,["tile","inflow"])
     let rotation = (Math.random()*90)-45
     style(ele, `
-            transform:rotate(${rotation}deg);
-        `)
+        position: absolute; 
+        left: 5vw; 
+        top: 0;
+        transform: rotate(${rotation}deg);
+    `)
     detect(ele, "click", letterTouch)
     letter_flow_list.push(ele)
     return ele
@@ -164,4 +167,19 @@ function loadLetter(letele){
     loaded_letters.push(letele)
 }
 
-export {loadWords, letterElement, checkWordNow, word_list, randomLetter}
+function cleanCards(){
+    for (let i = letter_flow_list.length-1; i >= 0; i--) {
+        if (checkOffScreen(letter_flow_list[i])){
+            remove(find(".letter-spawns"), letter_flow_list[i])
+            letter_flow_list.splice(i, 1);
+        }
+    }
+}
+
+function checkOffScreen(el) {
+    return (
+            (el.offsetLeft > document.body.offsetWidth)
+           )
+  }
+
+export {loadWords, letterElement, checkWordNow, word_list, randomLetter, cleanCards}
