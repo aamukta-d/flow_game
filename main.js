@@ -1,9 +1,19 @@
 import {loadWords, letterElement, randomLetter, cleanCards, formatted_words} from "./scripts/scrabble";
 import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./scripts/qol"
-import { real_time_left, timer, startTimer, points } from "./scripts/timer";
+import { real_time_left, timer, startTimer } from "./scripts/timer";
+import {makeChart} from "./scripts/game-chart"
+const replay = document.getElementById("replay")
+const popup = document.getElementById("popup")
+
 
 let loop = ""
 let game_running = true
+
+replay.addEventListener('click', function() {
+    popup.style.display = 'none'; 
+    startTimer();
+    game_running = true;
+})
 
 async function start(){
     await loadWords()
@@ -26,6 +36,8 @@ const game_loop = () => {
 function end(){
 
 }
+
+
 
 start()
 game_loop()

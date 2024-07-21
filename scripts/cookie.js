@@ -8,12 +8,14 @@ function get_points(){
 }
 
 function store_points(points){
+  console.log(points)
     get_points()
     if (points_store.length < 8){
         setCookie(points_store.length,points)
     }
     else{
         points_store.shift()
+        points_store[7] = points
         points_store.map((point, index) => {
             setCookie(index, point)
         })

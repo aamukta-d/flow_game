@@ -71,6 +71,7 @@ const submitWord = () => {
         held_letters.map((letter, index) => {
             remove(find(`.hold-${index}`), letter)
             remove(holds[index], hook_icon);
+            remove(holds[index], replace_icon_list[index]);
         })
         held_letters = []
         loaded_letters.map((letter, index)=>{
@@ -389,4 +390,24 @@ function checkOffScreen(el) {
            )
   }
 
-export {loadWords, letterElement, checkWordNow, word_list, randomLetter, cleanCards, words_submitted, formatted_words, points}
+function clear_all(){
+    console.log("clear")
+    submitWord()
+    points = 0
+    const point_text = find(".points")
+    write(point_text, points)
+    formatted_words = []
+    held_letters.map((letters,index) => {
+        remove(holds[index], letters)
+        remove(holds[index], replace_icon_list[index])
+    })
+    loaded_letters.map((letters,index) => {
+        remove(slots[index], letters)
+        remove(slots[index], hook_icon)
+    })
+    held_letters = []
+    loaded_letters = []
+    words_submitted = []
+}
+
+export {loadWords, letterElement, checkWordNow, word_list, randomLetter, cleanCards, words_submitted, formatted_words, points, clear_all}

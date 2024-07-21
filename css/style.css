@@ -117,3 +117,8 @@ html {
         transform: translate3d(85px, 0, 0);
     }
 }
+
+.instructions{
+    position:fixed;
+
+}

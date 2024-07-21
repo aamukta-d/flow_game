@@ -1,7 +1,12 @@
+import { points_store, store_points } from "./cookie";
+import { makeChart } from "./game-chart";
+import { clear_all, formatted_words, points } from "./scrabble";
+
 let countdown;
 let real_time_left =1000;
 const timerDisplay = document.querySelector('.timer');
 const popup = document.getElementById("popup")
+
 //const endTime = document.querySelector('.display__end-time');
 //const buttons = document.querySelectorAll('[data-time]');
 
@@ -51,7 +56,7 @@ function displayEndTime(timestamp) {
 
 function startTimer() {
   // Start a 1-minute countdown (60 seconds)
-  const seconds = 60;
+  const seconds = 20;
   timer(seconds);
 }
 
@@ -68,6 +73,10 @@ document.customForm.addEventListener('submit', function(e) {
 
 function showPopup(){
   popup.style.display = 'block';
+  store_points(points)
+  clear_all()
+  makeChart(points_store);
 }
 
 export {startTimer, timer ,real_time_left}
+

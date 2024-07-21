@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="style.css" rel="stylesheet">
-    <link href="copy.css" rel="stylesheet">
+    <link href="./css/copy.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
+    <link href="./css/popup.css" rel="stylesheet">
 </head>
 <body>
 
@@ -69,10 +70,139 @@
   </div>
   <div id = "popup">
     <p> game over </p>
+    <p> high scores </p>
+    <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+    <button id="replay"> replay </button>
   </div>
 </div>
 </div>
+
+<div  class="instructions">
+<button onclick="myFunction()">INSTRUCTIONS</button>
+    <div id="myPopup" class="popup">
+        <span class="popuptext" id="myPopupText">
+            <button onclick="showPopup('a')">español</button>
+            <button onclick="showPopup('b')">français</button>
+            <button onclick="showPopup('c')">türkçe</button>
+            <button onclick="showPopup('d')">deutsch</button>
+            <button onclick="showPopup('e')">hrvatski</button>
+        </span>
+    </div>
+    <div id="popupA" class="popup">
+        <span class="popuptext" id="popupTextA">
+            <h1>¡Mejora tu inglés con Flow!</h1>
+            Flow está diseñado para ayudarte a mejorar la fluidez de tu vocabulario. Tienes 60 segundos para formar tantas palabras como sea posible usando las letras dadas. Obtendrás más puntos por las palabras más largas y por las palabras que hagas en menos tiempo. ¡Buena suerte!
+            <button class="close" onclick="closePopup('popupTextA')">x</button>
+            <button class="back" onclick="goBack()">Volver</button>
+        </span>
+    </div>
+    <div id="popupB" class="popup">
+        <span class="popuptext" id="popupTextB">
+            <h1>Améliorez votre anglais avec Flow!</h1>
+            Flow est conçu pour vous aider à améliorer la fluidité de votre vocabulaire. Vous avez 60 secondes pour créer autant de mots que possible en utilisant les lettres données. Vous obtiendrez plus de points pour les mots plus longs et les mots que vous faites en moins de temps. Bonne chance!
+            <button class="close" onclick="closePopup('popupTextB')">x</button>
+            <button class="back" onclick="goBack()">Retour</button>
+        </span>
+    </div>
+    <div id="popupC" class="popup">
+        <span class="popuptext" id="popupTextC">
+            <h1>Flow ile İngilizcenizi geliştirin!</h1>
+            Flow, kelime dağarcığınızın akıcılığını geliştirmenize yardımcı olmak için tasarlanmıştır. Verilen harfleri kullanarak mümkün olduğunca çok kelime yapmak için 60 saniyeniz var. Daha uzun kelimeler ve daha kısa sürede yaptığınız kelimeler için daha fazla puan alacaksınız. İyi şanslar!
+            <button class="close" onclick="closePopup('popupTextC')">x</button>
+            <button class="back" onclick="goBack()">Geri Git</button>
+        </span>
+    </div>
+    <div id="popupD" class="popup">
+        <span class="popuptext" id="popupTextD">
+            <h1>Verbessern Sie Ihr Englisch mit Flow!</h1>
+            Flow wurde entwickelt, um Ihnen zu helfen, Ihren Wortschatz zu verbessern. Sie haben 60 Sekunden Zeit, um mit den vorgegebenen Buchstaben so viele Wörter wie möglich zu bilden. Sie erhalten mehr Punkte für längere Wörter und Wörter, die Sie in kürzerer Zeit machen. Viel Glück!
+            <button class="close" onclick="closePopup('popupTextD')">x</button>
+            <button class="back" onclick="goBack()">Zurück</button>
+        </span>
+    </div>
+    <div id="popupE" class="popup">
+        <span class="popuptext" id="popupTextE">
+            <h1>Poboljšajte svoj engleski uz Flow!</h1>
+            Flow je osmišljen kako bi vam pomogao poboljšati tečnost vašeg vokabulara. Imate 60 sekundi da napravite što više riječi pomoću danih slova. Dobit ćete više bodova za duže riječi i riječi koje napravite za manje vremena. Sretno!
+            <button class="close" onclick="closePopup('popupTextE')">x</button>
+            <button class="back" onclick="goBack()">Nazad</button>
+        </span>
+    </div>
+</div>
+
+    <script>
+        function myFunction() {
+            var popup = document.getElementById("myPopupText");
+            popup.classList.toggle("show");
+        }
+
+
+        function showPopup(button) {
+            var popupA = document.getElementById("popupTextA");
+            var popupB = document.getElementById("popupTextB");
+            var popupC = document.getElementById("popupTextC");
+            var popupD = document.getElementById("popupTextD");
+            var popupE = document.getElementById("popupTextE");
+            var mainPopup = document.getElementById("myPopupText");
+
+
+            // Hide all popups
+            popupA.classList.remove("show");
+            popupB.classList.remove("show");
+            popupC.classList.remove("show");
+            popupD.classList.remove("show");
+            popupE.classList.remove("show");
+
+
+            // Show the selected popup
+            if (button === 'a') {
+                popupA.classList.add("show");
+            } else if (button === 'b') {
+                popupB.classList.add("show");
+            } else if (button === 'c') {
+                popupC.classList.add("show");
+            } else if (button === 'd') {
+                popupD.classList.add("show");
+            } else if (button === 'e') {
+                popupE.classList.add("show");
+            }
+
+
+            mainPopup.classList.remove("show");
+        }
+
+
+        function closePopup(popupId) {
+            var popup = document.getElementById(popupId);
+            popup.classList.remove("show");
+            //document.getElementById("myPopupText").classList.add("show");
+        }
+
+
+        function goBack() {
+            var popupA = document.getElementById("popupA");
+            var popupB = document.getElementById("popupB");
+            var popupC = document.getElementById("popupC");
+            var popupD = document.getElementById("popupD");
+            var popupE = document.getElementById("popupE");
+
+
+            // Hide all option popups
+            popupA.classList.remove("show");
+            popupB.classList.remove("show");
+            popupC.classList.remove("show");
+            popupD.classList.remove("show");
+            popupE.classList.remove("show");
+
+
+            // Show the main popup
+            document.getElementById("myPopupText").classList.add("show");
+        }
+    </script>
   
 <script src="bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
 </body>
 </html>
+
