@@ -1,6 +1,7 @@
-import { points_store, store_points, setGameRunning } from "./cookie";
+import { points_store, store_points } from "./cookie";
 import { makeChart } from "./game-chart";
 import { clear_all, formatted_words, points } from "./scrabble";
+import {setGameRunning} from "../main"
 
 let countdown;
 let real_time_left =1000;
@@ -75,8 +76,6 @@ document.customForm.addEventListener('submit', function(e) {
 function generateWordFlow(){
   const flowOutput = document.getElementById("word-flow")
   flowOutput.innerHTML = '';
-
-  console.log(formatted_words[0][1]);
   
   for (let i = 0; i<formatted_words.length; i++){
 

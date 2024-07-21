@@ -15793,6 +15793,7 @@ exports.timer = timer;
 var _cookie = require("./cookie");
 var _gameChart = require("./game-chart");
 var _scrabble = require("./scrabble");
+var _main = require("../main");
 var countdown;
 var real_time_left = exports.real_time_left = 1000;
 var timerDisplay = document.querySelector('.timer');
@@ -15856,7 +15857,6 @@ document.customForm.addEventListener('submit', function(e) {
 function generateWordFlow() {
   var flowOutput = document.getElementById("word-flow");
   flowOutput.innerHTML = '';
-  console.log(_scrabble.formatted_words[0][1]);
   for (var i = 0; i < _scrabble.formatted_words.length; i++) {
     var boolHooked = false;
     for (var j = 0; j < _scrabble.formatted_words[i].length; j++) {
@@ -15915,7 +15915,7 @@ function generateWordFlow() {
   }
 }
 function showPopup() {
-  (0, _cookie.setGameRunning)(false);
+  (0, _main.setGameRunning)(false);
   popup.style.display = 'block';
   generateWordFlow();
   (0, _cookie.store_points)(_scrabble.points);
@@ -15923,4 +15923,4 @@ function showPopup() {
   (0, _scrabble.clear_all)();
 }
 
-},{"./cookie":5,"./game-chart":6,"./scrabble":8}]},{},[1]);
+},{"../main":1,"./cookie":5,"./game-chart":6,"./scrabble":8}]},{},[1]);
