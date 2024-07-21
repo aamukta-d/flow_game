@@ -4,22 +4,26 @@ import { real_time_left, timer, startTimer } from "./scripts/timer";
 import {makeChart} from "./scripts/game-chart"
 const replay = document.getElementById("replay")
 const popup = document.getElementById("popup")
-const startPopup = document.getElementById("start-popup")
+const startPopup = document.getElementById("start-popup-fixed")
 const startButton = document.getElementById("start-button")
+const flag_buttons = find(".flag-buttons")
 
 
 let loop = ""
 let game_running = false;
 
-replay.addEventListener('click', function() {
-    popup.style.display = 'none'; 
+detect(replay, 'click', function() {
+    popup.classList.add("hidden")
     startTimer();
     game_running = true;
 })
 
-startButton.addEventListener('click', function(){
-   startPopup.style.display = 'none';
-   popup.style.display = 'none'; 
+detect(startButton, 'click', () => {
+    console.log("sss")
+   startPopup.classList.add("hidden")
+   popup.classList.add("hidden") 
+   flag_buttons.classList.add("hidden") 
+   startButton.classList.add("hidden") 
    startTimer()
    game_running = true;
 })
@@ -28,7 +32,7 @@ startButton.addEventListener('click', function(){
 async function start(){
     await loadWords()
     
-    startPopup.style.display = 'block';
+    //startPopup.style.display = 'block';
     if (loop === ""){
         loop = setInterval(game_loop, 1000);
     }

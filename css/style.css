@@ -107,14 +107,15 @@ html {
     display: flex; 
     flex-direction: column;
     align-content: space-between;
-    position: fixed;
+    align-items: center;
+    position: absolute;
     z-index: 1;
-    left: 0;
-    top: 0;
-    width: 80vh;
-    height: 40vh;
+    left: 50vw;
+    top: 50vh;
+    transform: translate(-50%,-50%);
+    width: 130vh;
+    height: 90vh;
     overflow: auto;
-    padding-top: 60px;
     background-image: url("../endpopup.png");
     background-size: cover; /* Scales the image to cover the entire element */
     background-position: contain;
@@ -131,6 +132,8 @@ html {
     border-radius: 5px; /* Add rounded corners */
     cursor: pointer; /* Change cursor to pointer on hover */
     transition: transform 0.3s; /* Smooth transition effect */
+    width:auto;
+    margin: 20px;
 }
 
 #replay:hover{

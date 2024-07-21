@@ -6,8 +6,10 @@
     left:-50vh;
     top: 20vh;
     display:inline-block;
+    pointer-events: none;
 }
 .popuptext {
+    pointer-events: auto;
     visibility: hidden;
     background-color: #555;
     color: #fff;
@@ -83,4 +85,18 @@ span.popuptext{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+  .hidden{
+    visibility: hidden;
+  }
+  p{
+    padding: none;
+    margin: none;
+    font-size: 20px;
+    margin-block-start: 0.2em;
+    margin-block-end: 0.2em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
   }
