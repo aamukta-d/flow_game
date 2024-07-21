@@ -10,8 +10,9 @@ html {
 .everything {
     position: relative;
     text-align: center;
-    background: white;
-    color: #000000;
+    background-image: url("../background.png");
+    background-size:     cover;                      
+    background-repeat:   no-repeat;
 }
 
 .pre-wave {
@@ -101,6 +102,7 @@ html {
   user-select: none; /* Standard syntax */
 
 }
+
 
 #popup {
     display: none; 

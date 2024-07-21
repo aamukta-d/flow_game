@@ -84,11 +84,29 @@
 <button onclick="myFunction()">INSTRUCTIONS</button>
     <div id="myPopup" class="popup">
         <span class="popuptext" id="myPopupText">
-            <button onclick="showPopup('a')">español</button>
-            <button onclick="showPopup('b')">français</button>
-            <button onclick="showPopup('c')">türkçe</button>
-            <button onclick="showPopup('d')">deutsch</button>
-            <button onclick="showPopup('e')">hrvatski</button>
+            <button onclick="showPopup('a')" class="lang">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/30px-Flag_of_Spain.svg.png" class = "flag">
+              Español
+            </button>
+            <button onclick="showPopup('b')" class="lang">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/30px-Flag_of_France.svg.png" class = "flag">
+              Français
+            </button>
+            <button onclick="showPopup('c')" class="lang">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/30px-Flag_of_Turkey.svg.png" class = "flag">
+              Türkçe
+            </button>
+            <button onclick="showPopup('d')" class="lang">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/30px-Flag_of_Germany.svg.png" class = "flag">
+              Deutsch
+            </button>
+            <button onclick="showPopup('e')" class="lang">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Croatia.svg/30px-Flag_of_Croatia.svg.png" class = "flag">
+              Hrvatski
+            </button>
+            <button onclick="showPopup('f')" class="lang">
+              <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/30px-Flag_of_the_United_Kingdom.svg.png" class="flag">
+              English</button>
         </span>
     </div>
     <div id="popupA" class="popup">
@@ -131,6 +149,14 @@
             <button class="back" onclick="goBack()">Nazad</button>
         </span>
     </div>
+    <div id="popupF" class="popup">
+      <span class="popuptext" id="popupTextF">
+          <h1>Improve your English Flow!</h1>
+          Flow is designed to help you improve your vocabulary fluency. You have 60 seconds to create as many words as possible using the given letters. You will get more points for longer words and words you do in less time. Good luck!
+          <button class="close" onclick="closePopup('popupTextF')">x</button>
+          <button class="back" onclick="goBack()">Back</button>
+      </span>
+  </div>
 </div>
 
     <script>
@@ -146,6 +172,7 @@
             var popupC = document.getElementById("popupTextC");
             var popupD = document.getElementById("popupTextD");
             var popupE = document.getElementById("popupTextE");
+            var popupF = document.getElementById("popupTextF");
             var mainPopup = document.getElementById("myPopupText");
 
 
@@ -155,6 +182,7 @@
             popupC.classList.remove("show");
             popupD.classList.remove("show");
             popupE.classList.remove("show");
+            popupF.classList.remove("show");
 
 
             // Show the selected popup
@@ -168,6 +196,8 @@
                 popupD.classList.add("show");
             } else if (button === 'e') {
                 popupE.classList.add("show");
+            } else if (button === 'f') {
+                popupF.classList.add("show");
             }
 
 
@@ -188,6 +218,7 @@
             var popupC = document.getElementById("popupTextC");
             var popupD = document.getElementById("popupTextD");
             var popupE = document.getElementById("popupTextE");
+            var popupF = document.getElementById("popupTextF");
 
 
             // Hide all option popups
@@ -196,6 +227,8 @@
             popupC.classList.remove("show");
             popupD.classList.remove("show");
             popupE.classList.remove("show");
+            popupF.classList.remove("show");
+
 
 
             // Show the main popup
