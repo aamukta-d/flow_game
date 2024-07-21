@@ -27,6 +27,7 @@ replay.addEventListener('click', function () {
 });
 startButton.addEventListener('click', function () {
   startPopup.style.display = 'none';
+  popup.style.display = 'none';
   (0, _timer.startTimer)();
   exports.game_running = game_running = true;
 });
@@ -48,7 +49,6 @@ function _start() {
           if (_timer.real_time_left <= 1) {
             clearInterval(loop);
           }
-          //load
         case 5:
         case "end":
           return _context.stop();
@@ -15847,7 +15847,7 @@ function displayEndTime(timestamp) {
 }
 function startTimer() {
   // Start a 1-minute countdown (60 seconds)
-  var seconds = 5;
+  var seconds = 90;
   timer(seconds);
 }
 
