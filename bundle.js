@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.game_running = void 0;
+exports.setGameRunning = setGameRunning;
 var _scrabble = require("./scripts/scrabble");
 var _qol = require("./scripts/qol");
 var _timer = require("./scripts/timer");
@@ -54,6 +55,9 @@ var game_loop = function game_loop() {
   //console.log(getEventListeners(document.querySelectorAll('.tile')));
 };
 function end() {}
+function setGameRunning(_boolean) {
+  exports.game_running = game_running = _boolean;
+}
 start();
 game_loop();
 end();
@@ -15092,9 +15096,13 @@ function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Sym
 function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 _chart.Chart.register.apply(_chart.Chart, _toConsumableArray(_chart.registerables));
+var chartInstance;
 function makeChart(yValues) {
-  var chart = document.getElementById("myChart");
-  new _chart.Chart(chart, {
+  var chart = document.getElementById("myChart").getContext("2d");
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+  chartInstance = new _chart.Chart(chart, {
     type: "line",
     data: {
       labels: [0, 0, 0, 0, 0, 0, 0, 0],
@@ -15340,7 +15348,7 @@ var submitWord = function submitWord() {
     exports.points = points = points + score;
     (0, _qol.write)(point_text, points);
     words_submitted.push(word);
-    formatted_words.push(formatted_words);
+    formatted_words.push(formatted_word);
     held_letters.map(function (letter, index) {
       (0, _qol.remove)((0, _qol.find)(".hold-".concat(index)), letter);
       (0, _qol.remove)(holds[index], hook_icon);
@@ -15644,11 +15652,14 @@ Object.defineProperty(exports, "__esModule", {
 exports.real_time_left = void 0;
 exports.startTimer = startTimer;
 exports.timer = timer;
+var _main = require("../main");
 var _gameChart = require("./game-chart");
+var _scrabble = require("./scrabble");
 var countdown;
 var real_time_left = exports.real_time_left = 1000;
 var timerDisplay = document.querySelector('.timer');
 var popup = document.getElementById("popup");
+var prevSpace = 0;
 
 //const endTime = document.querySelector('.display__end-time');
 //const buttons = document.querySelectorAll('[data-time]');
@@ -15704,9 +15715,72 @@ document.customForm.addEventListener('submit', function(e) {
 });
 */
 
+function generateWordFlow() {
+  var flowOutput = document.getElementById("word-flow");
+  flowOutput.innerHTML = '';
+  console.log(_scrabble.formatted_words[0][1]);
+  for (var i = 0; i < _scrabble.formatted_words.length; i++) {
+    var boolHooked = false;
+    for (var j = 0; j < _scrabble.formatted_words[i].length; j++) {
+      //finds the length of the first formatted word -- how long is that first array? traverse through it all
+      if (_scrabble.formatted_words[i][j].hooked) {
+        //if any of the letters are hooked
+        boolHooked = true;
+      }
+    }
+    console.log(boolHooked);
+    if (boolHooked) {
+      var hookedIndex = 0;
+      var hookedLetter = '';
+      for (var l = 0; l < _scrabble.formatted_words[i].length; l++) {
+        if (_scrabble.formatted_words[i][l].hooked) {
+          hookedIndex = l;
+          hookedLetter = _scrabble.formatted_words[i][l].letter;
+        }
+      }
+      var hookedPrevIndex = 0;
+      for (var _l = 0; _l < _scrabble.formatted_words[i - 1].length; _l++) {
+        if (_scrabble.formatted_words[i - 1][_l].letter == hookedLetter) {
+          hookedPrevIndex = _l;
+        }
+      }
+      var spacesNeeded = hookedPrevIndex - hookedIndex;
+      var spaceSpan = document.createElement('span');
+      console.log(spacesNeeded);
+      spaceSpan.innerHTML = '&nbsp;'.repeat(spacesNeeded + 16 + prevSpace);
+      flowOutput.appendChild(spaceSpan);
+      for (var k = 0; k < _scrabble.formatted_words[i].length; k++) {
+        var span = document.createElement('span');
+        span.textContent = _scrabble.formatted_words[i][k].letter;
+        if (_scrabble.formatted_words[i][k].hooked) {
+          span.classList.add('hooked-letter');
+        }
+        flowOutput.appendChild(span);
+      }
+      prevSpace = spacesNeeded;
+      var br = document.createElement('br');
+      flowOutput.appendChild(br);
+    }
+    if (!boolHooked) {
+      var _spaceSpan = document.createElement('span');
+      _spaceSpan.innerHTML = '&nbsp;'.repeat(Math.max(0, 16));
+      flowOutput.appendChild(_spaceSpan);
+      for (var _k = 0; _k < _scrabble.formatted_words[i].length; _k++) {
+        var _span = document.createElement('span');
+        _span.textContent = _scrabble.formatted_words[i][_k].letter;
+        flowOutput.appendChild(_span);
+      }
+      var _br = document.createElement('br');
+      flowOutput.appendChild(_br);
+      prevSpace = 0;
+    }
+  }
+}
 function showPopup() {
+  (0, _main.setGameRunning)(false);
   popup.style.display = 'block';
   (0, _gameChart.makeChart)([1, 2, 3]);
+  generateWordFlow();
 }
 
-},{"./game-chart":5}]},{},[1]);
+},{"../main":1,"./game-chart":5,"./scrabble":7}]},{},[1]);

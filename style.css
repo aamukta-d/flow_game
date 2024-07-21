@@ -98,6 +98,34 @@ html {
     padding-top: 60px;
   }
 
+#replay{
+   
+    font-size: 14px;
+
+    background-color: white; 
+    color: black;
+    padding: 10px 20px; /* Add padding to make the button larger */
+    border: 1px solid black; /* Remove default border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: transform 0.3s; /* Smooth transition effect */
+}
+
+#replay:hover{
+    background-color: rgba(155,232,240,0.5);
+    transform: scale(1.1); /* Enlarge the button on hover */
+}
+
+#word-flow{
+    text-align: left;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre; /* Preserves whitespace formatting */
+}
+
+.hooked-letter {
+    color: red; /* Change this to the desired color */
+}
+
 @keyframes tile-move {
 
     from {

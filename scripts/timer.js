@@ -1,9 +1,12 @@
+import { game_running, setGameRunning} from "../main";
 import { makeChart } from "./game-chart";
+import {formatted_words} from "./scrabble";
 
 let countdown;
 let real_time_left =1000;
 const timerDisplay = document.querySelector('.timer');
 const popup = document.getElementById("popup")
+let prevSpace = 0;
 
 //const endTime = document.querySelector('.display__end-time');
 //const buttons = document.querySelectorAll('[data-time]');
@@ -69,9 +72,83 @@ document.customForm.addEventListener('submit', function(e) {
 });
 */
 
+function generateWordFlow(){
+  const flowOutput = document.getElementById("word-flow")
+  flowOutput.innerHTML = '';
+
+  console.log(formatted_words[0][1]);
+  
+  for (let i = 0; i<formatted_words.length; i++){
+
+      let boolHooked = false;
+
+      for (let j = 0; j<formatted_words[i].length; j++){ //finds the length of the first formatted word -- how long is that first array? traverse through it all
+          if (formatted_words[i][j].hooked){ //if any of the letters are hooked
+              boolHooked = true;
+          }
+      }
+
+      console.log(boolHooked)
+
+      if (boolHooked){
+        let hookedIndex = 0;
+        let hookedLetter = '';
+        for (let l = 0; l<formatted_words[i].length; l++){
+          if (formatted_words[i][l].hooked){
+            hookedIndex = l;
+            hookedLetter = formatted_words[i][l].letter;
+          }
+        }
+
+        let hookedPrevIndex = 0;
+        for (let l = 0; l<formatted_words[i-1].length; l++){
+          if (formatted_words[i-1][l].letter == hookedLetter){
+            hookedPrevIndex = l;
+          }
+        }
+        
+        let spacesNeeded = hookedPrevIndex-hookedIndex;
+        let spaceSpan = document.createElement('span');
+        console.log(spacesNeeded)
+        spaceSpan.innerHTML = '&nbsp;'.repeat(spacesNeeded+16+prevSpace);
+        flowOutput.appendChild(spaceSpan);
+
+        for (let k = 0; k<formatted_words[i].length; k++){
+          let span = document.createElement('span');
+          span.textContent = formatted_words[i][k].letter;
+          if (formatted_words[i][k].hooked) {
+            span.classList.add('hooked-letter');
+          }
+          flowOutput.appendChild(span);
+        }
+      prevSpace = spacesNeeded;
+      let br = document.createElement('br');
+      flowOutput.appendChild(br);
+
+      }
+
+      if (!boolHooked){
+        let spaceSpan = document.createElement('span');
+        spaceSpan.innerHTML = '&nbsp;'.repeat(Math.max(0, 16));
+        flowOutput.appendChild(spaceSpan);
+          for (let k = 0; k<formatted_words[i].length; k++){
+              let span = document.createElement('span');
+              span.textContent = formatted_words[i][k].letter;
+              flowOutput.appendChild(span);
+          }
+
+          let br = document.createElement('br');
+          flowOutput.appendChild(br);
+          prevSpace = 0;
+      }
+  }
+}
+
 function showPopup(){
+  setGameRunning(false);
   popup.style.display = 'block';
   makeChart([1,2,3]);
+  generateWordFlow();
 }
 
 export {startTimer, timer ,real_time_left}

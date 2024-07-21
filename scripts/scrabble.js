@@ -67,7 +67,7 @@ const submitWord = () => {
         points += score
         write(point_text, points)
         words_submitted.push(word)
-        formatted_words.push(formatted_words)
+        formatted_words.push(formatted_word)
         held_letters.map((letter, index) => {
             remove(find(`.hold-${index}`), letter)
             remove(holds[index], hook_icon);

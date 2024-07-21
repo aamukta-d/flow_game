@@ -15,6 +15,7 @@ replay.addEventListener('click', function() {
     game_running = true;
 })
 
+
 async function start(){
     await loadWords()
     startTimer()
@@ -37,10 +38,12 @@ function end(){
 
 }
 
-
+function setGameRunning(boolean){
+    game_running = boolean;
+}
 
 start()
 game_loop()
 end()
 
-export{game_running}
+export{game_running, setGameRunning}
