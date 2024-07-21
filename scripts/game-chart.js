@@ -5,13 +5,12 @@ let chart = ""
 
 function makeChart(yValues){
     if (chart !== ""){
-        removeData(chart)
+        //removeData(chart)
         addData(chart, yValues)
     }
     else{
-        chart = document.getElementById("myChart")
-    
-    new Chart(chart, {
+        let ctx = document.getElementById("myChart")
+    chart = new Chart(ctx, {
         type: "line",
         data: {
           labels: [0,0,0,0,0,0,0,0],
@@ -43,14 +42,14 @@ function makeChart(yValues){
 
 function removeData(chart) {
     chart.data.datasets.forEach((dataset) => {
-        dataset.data.pop();
+        dataset.data;
     });
     chart.update();
 }
 
 function addData(chart, newData) {
     chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(newData);
+        dataset.data = newData;
     });
     chart.update();
 }

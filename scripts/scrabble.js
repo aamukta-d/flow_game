@@ -47,7 +47,7 @@ const submitWord = () => {
     let formatted_word = []
     loaded_letters.map((letter, index) => {
         word = word + letter.textContent
-        remove(slots[index], letter);
+        fadeOut(slots[index], letter);
         remove(slots[index], hook_icon);
         word_modifiers.push(letter.dataset.modifier)
         formatted_word.push({
@@ -59,8 +59,8 @@ const submitWord = () => {
     let score = checkWordNow(word.toLowerCase(), formatted_word)
     if (score === 0){
         for (let i = 0; i < word.length; i++) {
-            render(find(".letter-spawns"),letterElement(word[i], [word_modifiers[i]]))
-          }
+            fadeIn(find(".letter-spawns"),letterElement(word[i], [word_modifiers[i]]))
+        }
     }
     else{
         const point_text = find(".points")
@@ -77,7 +77,7 @@ const submitWord = () => {
         loaded_letters.map((letter, index)=>{
             held_letters.push(letter)
             letter.dataset.hooked = "false"
-            render(find(`.hold-${index}`), letter)
+            fadeIn(find(`.hold-${index}`), letter)
             detect(letter, "click", letterHook)
             undetect(letter, "click", letterRem)
         })        
@@ -96,7 +96,7 @@ function remove_replaces(){
 function add_replaces(){
     held_letters.map((letter, index) => {
         if (letter !== "hooked"){
-            render(holds[index], replace_icon_list[index]);
+            fadeIn(holds[index], replace_icon_list[index]);
         }
     })   
 }
@@ -160,14 +160,14 @@ const letterHook = (e) => {
         const letter = loaded_letters[index]
         letter.dataset.hooked = "false"
         held_letters[index2] = letter
-        render(holds[index2], letter)
+        fadeIn(holds[index2], letter)
         downgrade_letter(letter)
-        remove(slots[index], letter)
+        fadeOut(slots[index], letter)
         remove(slots[index], hook_icon)
         held_letters[index3] = "hooked"
-        render(slots[index], e.target)
+        fadeIn(slots[index], e.target)
         upgrade_letter(e.target)
-        render(slots[index], hook_icon)
+        fadeIn(slots[index], hook_icon)
         loaded_letters[index] = e.target
         e.target.dataset.hooked = "true"
         remove_replaces()
@@ -177,10 +177,10 @@ const letterHook = (e) => {
         if (e.target.dataset.hooked === "false"){
             if (loaded_letters.length < 8){
                 let index = held_letters.indexOf(e.target)
-                remove(holds[index], e.target)
+                fadeOut(holds[index], e.target)
                 held_letters[index] = "hooked"
                 loadLetter(e.target)
-                render(slots[loaded_letters.length-1], hook_icon)
+                fadeIn(slots[loaded_letters.length-1], hook_icon)
                 e.target.dataset.hooked = "true"
                 upgrade_letter(e.target)
                 remove_replaces()
@@ -191,14 +191,14 @@ const letterHook = (e) => {
             const index2 = held_letters.indexOf("hooked")    
             held_letters[index2] = e.target
             e.target.dataset.hooked = "false"
-            render(holds[index2], e.target)
+            fadeIn(holds[index2], e.target)
             downgrade_letter(e.target)
-            remove(slots[index], e.target)
+            fadeOut(slots[index], e.target)
             remove(slots[index], hook_icon)
             for (let i = index + 1; i<loaded_letters.length; i++){
                 const temp = loaded_letters[i]
-                remove(find(`.slot-${i}`),temp)
-                render(find(`.slot-${i-1}`),temp)
+                fadeIn(find(`.slot-${i}`),temp)
+                fadeIn(find(`.slot-${i-1}`),temp)
                 loaded_letters[i-1] = temp
             }
             loaded_letters.pop()
@@ -299,7 +299,7 @@ function letterElement(lett, modifier = []){
     write(ele, letter)
     addClass(ele,["tile","inflow"])
     let rotation = Math.floor(Math.random()*60)-30
-    let translation = Math.floor(Math.random()*200)
+    let translation = Math.floor(Math.random()*100)
     let top = Math.floor(Math.random()*-40)-25
     let tile_type = Math.floor(Math.random()*15*15)
     let tile_mod = "single-letter"
@@ -321,7 +321,7 @@ function letterElement(lett, modifier = []){
         position: absolute; 
         left: 5vw; 
         top: ${top}px;
-        transform: rotate(${rotation}deg) translate(-${translation}px,0px);
+        transform: rotate(${rotation}deg) translate(${translation}px,0px);
     `)
     detect(ele, "click", letterTouch)
     letter_flow_list.push(ele)
@@ -333,7 +333,7 @@ const letterTouch = (e)=>{
     console.log ("touch")
     if (loaded_letters.length < 8){   
         undetect(e.target, "click", letterTouch) 
-        remove(find(".letter-spawns"), e.target)
+        fadeOut(find(".letter-spawns"), e.target)
         letter_flow_list = letter_flow_list.filter(letter => letter === e.target);
         loadLetter(e.target)
         detect(e.target, "click", letterRem)
@@ -345,15 +345,15 @@ const letterTouch = (e)=>{
 const letterRem = (e) =>{
     console.log ("rem")
     const index = loaded_letters.indexOf(e.target)
-    remove(find(`.slot-${index}`),e.target)
+    fadeOut(find(`.slot-${index}`),e.target)
     for (let i = index + 1; i<loaded_letters.length; i++){
         const temp = loaded_letters[i]
-        remove(find(`.slot-${i}`),temp)
-        render(find(`.slot-${i-1}`),temp)
+        fadeOut(find(`.slot-${i}`),temp)
+        fadeIn(find(`.slot-${i-1}`),temp)
         loaded_letters[i-1] = temp
     }
     loaded_letters.pop()
-    render(find(".letter-spawns"),letterElement(e.target.textContent, [e.target.dataset.modifier]))
+    fadeIn(find(".letter-spawns"),letterElement(e.target.textContent, [e.target.dataset.modifier]))
 }
 
 function randomLetter(){
@@ -365,7 +365,7 @@ function randomLetter(){
 }
 
 function loadLetter(letele){
-    render(find(`.slot-${loaded_letters.length}`),letele)
+    fadeIn(find(`.slot-${loaded_letters.length}`),letele)
     remClass(letele,["inflow"])
     addClass(letele,["loaded"])
     style(letele, `
@@ -378,7 +378,7 @@ function loadLetter(letele){
 function cleanCards(){
     for (let i = letter_flow_list.length-1; i >= 0; i--) {
         if (checkOffScreen(letter_flow_list[i])){
-            remove(find(".letter-spawns"), letter_flow_list[i])
+            fadeOut(find(".letter-spawns"), letter_flow_list[i])
             letter_flow_list.splice(i, 1);
         }
     }
@@ -386,7 +386,7 @@ function cleanCards(){
 
 function checkOffScreen(el) {
     return (
-            (el.offsetLeft > document.body.offsetWidth + 200)
+            (el.offsetLeft > document.body.offsetWidth)
            )
   }
 
@@ -398,11 +398,11 @@ function clear_all(){
     write(point_text, points)
     formatted_words = []
     held_letters.map((letters,index) => {
-        remove(holds[index], letters)
+        fadeOut(holds[index], letters)
         remove(holds[index], replace_icon_list[index])
     })
     loaded_letters.map((letters,index) => {
-        remove(slots[index], letters)
+        fadeOut(slots[index], letters)
         remove(slots[index], hook_icon)
     })
     held_letters = []
@@ -410,4 +410,24 @@ function clear_all(){
     words_submitted = []
 }
 
-export {loadWords, letterElement, checkWordNow, word_list, randomLetter, cleanCards, words_submitted, formatted_words, points, clear_all}
+function fadeIn(parent, ele){
+    if (ele != null){
+    addClass(ele, ["faded"])
+    render(parent, ele)
+    setTimeout(() => {
+        remClass(ele, ["faded"])
+      }, 50);
+    }
+}
+
+function fadeOut(parent, ele){
+    console.log(ele)
+    if (ele){
+    addClass(ele, ["faded"])
+    setTimeout(() => {
+        remove(parent, ele)
+      }, 50);
+    }
+}
+
+export {loadWords, letterElement, checkWordNow, word_list, randomLetter, cleanCards, words_submitted, formatted_words, points, clear_all, fadeIn}

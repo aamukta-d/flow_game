@@ -13,7 +13,7 @@ const create = (element) => {
 }
 
 const addClass = (element, classlist) =>{
-    classlist.forEach(clas => {element.classList.add(clas)});
+        classlist.forEach(clas => {element.classList.add(clas)});
 }
 
 const hasClass = (element, clas) => {

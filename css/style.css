@@ -104,7 +104,7 @@ html {
         left: -5vw;
       }
     to {
-        left: calc(100vw + 220px);
+        left: calc(105vw);
       }
     
 }
@@ -120,5 +120,4 @@ html {
 
 .instructions{
     position:fixed;
-
 }

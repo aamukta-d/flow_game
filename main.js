@@ -1,4 +1,4 @@
-import {loadWords, letterElement, randomLetter, cleanCards, formatted_words} from "./scripts/scrabble";
+import {loadWords, letterElement, randomLetter, cleanCards, formatted_words, fadeIn} from "./scripts/scrabble";
 import {render, remove, create, addClass, hasClass, remClass, find, findAll, write, detect, undetect, style, attribs, isElement} from "./scripts/qol"
 import { real_time_left, timer, startTimer } from "./scripts/timer";
 import {makeChart} from "./scripts/game-chart"
@@ -28,7 +28,7 @@ async function start(){
 
 
 const game_loop = () => {
-    render(find(".letter-spawns"),letterElement(randomLetter()))
+    fadeIn(find(".letter-spawns"),letterElement(randomLetter()))
     cleanCards()
     //console.log(getEventListeners(document.querySelectorAll('.tile')));
 }
