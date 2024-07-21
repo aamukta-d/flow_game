@@ -104,7 +104,9 @@ html {
 }
 
 #popup {
-    display: none; 
+    display: flex; 
+    flex-direction: column;
+    align-content: space-between;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -120,10 +122,8 @@ html {
   }
 
 #replay{
-   
     font-size: 14px;
     position: relative;
-    top: 300px;
     background-color: white; 
     color: black;
     padding: 10px 20px; /* Add padding to make the button larger */
@@ -138,9 +138,10 @@ html {
     transform: scale(1.1); /* Enlarge the button on hover */
 }
 
+
 #word-flow{
     text-align: left;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Monaco', Courier, monospace;
     white-space: pre; /* Preserves whitespace formatting */
 }
 
@@ -186,7 +187,6 @@ html {
 
 .lang{
     font-size: 14px;
-
     background-color: white; 
     color: black;
     padding: 10px 20px; /* Add padding to make the button larger */
@@ -217,12 +217,10 @@ html {
 
 #highscores{
     position: relative;
-    top: 160px;
 }
 
 #myChart{
     position: relative;
-    top: 190px;
 }
 
 

@@ -19,6 +19,7 @@ replay.addEventListener('click', function() {
 
 startButton.addEventListener('click', function(){
    startPopup.style.display = 'none';
+   popup.style.display = 'none'; 
    startTimer()
    game_running = true;
 })
@@ -35,7 +36,7 @@ async function start(){
     if (real_time_left <= 1){
         clearInterval(loop)
     }
-    //load
+
 }
 
 
