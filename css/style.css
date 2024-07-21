@@ -71,11 +71,28 @@ html {
     width: 100%;
 }
 
-.inflow{
+.inflow1{
     animation-duration: 45s;
     animation-name: moving-tiles;
     position: absolute;
-    animation: tile-move 10s linear forwards;
+    animation: tile-move 12s linear forwards;
+    filter: sepia(10%)  brightness(90%) ;
+}
+
+.inflow2{
+    animation-duration: 45s;
+    animation-name: moving-tiles;
+    position: absolute;
+    animation: tile-move 11s linear forwards;
+    filter: sepia(10%) brightness(95%);
+}
+
+.inflow3{
+    animation-duration: 45s;
+    animation-name: moving-tiles;
+    position: absolute;
+    animation: tile-move 13s linear forwards;
+    filter: sepia(10%)  brightness(85%);
 }
 
 .tile{
@@ -129,10 +146,10 @@ html {
 @keyframes tile-move {
 
     from {
-        left: -5vw;
+        left: -15vw;
       }
     to {
-        left: calc(105vw);
+        left: calc(115vw);
       }
     
 }

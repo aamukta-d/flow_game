@@ -61,6 +61,7 @@ const submitWord = () => {
         for (let i = 0; i < word.length; i++) {
             fadeIn(find(".letter-spawns"),letterElement(word[i], [word_modifiers[i]]))
         }
+        flashInvalid()
     }
     else{
         const point_text = find(".points")
@@ -81,6 +82,7 @@ const submitWord = () => {
             detect(letter, "click", letterHook)
             undetect(letter, "click", letterRem)
         })        
+        flashValid()
     }
     word_modifiers = []
     loaded_letters = []
@@ -299,7 +301,6 @@ function letterElement(lett, modifier = []){
     write(ele, letter)
     addClass(ele,["tile","inflow"])
     let rotation = Math.floor(Math.random()*60)-30
-    let translation = Math.floor(Math.random()*100)
     let top = Math.floor(Math.random()*-40)-25
     let tile_type = Math.floor(Math.random()*15*15)
     let tile_mod = "single-letter"
@@ -316,12 +317,21 @@ function letterElement(lett, modifier = []){
         tile_mod = "double-letter"
     }
     addClass(ele,[tile_mod])
+    let in_flow = "inflow1"
+    let flowid = Math.floor(Math.random()*3)
+    if (flowid === 1){
+        in_flow = "inflow2"
+    }
+    if (flowid === 2){
+        in_flow = "inflow3"
+    }
+    addClass(ele,[in_flow])
     ele.dataset.modifier = tile_mod
     style(ele, `
         position: absolute; 
         left: 5vw; 
         top: ${top}px;
-        transform: rotate(${rotation}deg) translate(${translation}px,0px);
+        transform: rotate(${rotation}deg);
     `)
     detect(ele, "click", letterTouch)
     letter_flow_list.push(ele)
@@ -366,7 +376,7 @@ function randomLetter(){
 
 function loadLetter(letele){
     fadeIn(find(`.slot-${loaded_letters.length}`),letele)
-    remClass(letele,["inflow"])
+    remClass(letele,["inflow1", "inflow2", "inflow3"])
     addClass(letele,["loaded"])
     style(letele, `
         transform:rotate(0deg);
@@ -421,13 +431,36 @@ function fadeIn(parent, ele){
 }
 
 function fadeOut(parent, ele){
-    console.log(ele)
     if (ele){
     addClass(ele, ["faded"])
     setTimeout(() => {
         remove(parent, ele)
       }, 50);
     }
+}
+
+function flashValid(){
+    slots.forEach((slot) => {
+        addClass(slot, ["valid"])
+    })
+    
+    setTimeout(() => {
+        slots.forEach((slot) => {
+            remClass(slot, ["valid"])
+        })
+      }, 200);
+}
+
+function flashInvalid(){
+    slots.forEach((slot) => {
+        addClass(slot, ["invalid"])
+    })
+    
+    setTimeout(() => {
+        slots.forEach((slot) => {
+            remClass(slot, ["invalid"])
+        })
+      }, 200);
 }
 
 export {loadWords, letterElement, checkWordNow, word_list, randomLetter, cleanCards, words_submitted, formatted_words, points, clear_all, fadeIn}

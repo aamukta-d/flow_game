@@ -21,7 +21,11 @@ const hasClass = (element, clas) => {
 }
 
 const remClass = (element, classlist) =>{
-    classlist.forEach(clas => {element.classList.remove(clas)});
+    classlist.forEach(clas => {
+        if (hasClass(element, clas)){
+            element.classList.remove(clas)
+        }
+    });
 }
 
 const find = (selector) => {

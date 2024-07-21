@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.game_running = void 0;
+exports.setGameRunning = setGameRunning;
 var _scrabble = require("./scripts/scrabble");
 var _qol = require("./scripts/qol");
 var _timer = require("./scripts/timer");
@@ -54,6 +55,9 @@ var game_loop = function game_loop() {
   //console.log(getEventListeners(document.querySelectorAll('.tile')));
 };
 function end() {}
+function setGameRunning(_boolean) {
+  exports.game_running = game_running = _boolean;
+}
 start();
 game_loop();
 end();
@@ -15147,39 +15151,37 @@ function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Sym
 function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 _chart.Chart.register.apply(_chart.Chart, _toConsumableArray(_chart.registerables));
-var chart = "";
+var chartInstance;
 function makeChart(yValues) {
-  if (chart !== "") {
-    //removeData(chart)
-    addData(chart, yValues);
-  } else {
-    var ctx = document.getElementById("myChart");
-    chart = new _chart.Chart(ctx, {
-      type: "line",
-      data: {
-        labels: [0, 0, 0, 0, 0, 0, 0, 0],
-        datasets: [{
-          backgroundColor: "rgba(0,0,255,1.0)",
-          borderColor: "rgba(0,0,255,0.1)",
-          data: yValues
-        }]
-      },
-      options: {
-        scales: {
-          x: {
-            ticks: {
-              display: false
-            }
-          }
-        },
-        plugins: {
-          legend: {
+  var chart = document.getElementById("myChart").getContext("2d");
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+  chartInstance = new _chart.Chart(chart, {
+    type: "line",
+    data: {
+      labels: [0, 0, 0, 0, 0, 0, 0, 0],
+      datasets: [{
+        backgroundColor: "rgba(0,0,255,1.0)",
+        borderColor: "rgba(0,0,255,0.1)",
+        data: yValues
+      }]
+    },
+    options: {
+      scales: {
+        x: {
+          ticks: {
             display: false
           }
         }
+      },
+      plugins: {
+        legend: {
+          display: false
+        }
       }
-    });
-  }
+    }
+  });
 }
 function removeData(chart) {
   chart.data.datasets.forEach(function (dataset) {
@@ -15222,7 +15224,9 @@ var hasClass = exports.hasClass = function hasClass(element, clas) {
 };
 var remClass = exports.remClass = function remClass(element, classlist) {
   classlist.forEach(function (clas) {
-    element.classList.remove(clas);
+    if (hasClass(element, clas)) {
+      element.classList.remove(clas);
+    }
   });
 };
 var find = exports.find = function find(selector) {
@@ -15410,12 +15414,13 @@ var submitWord = function submitWord() {
     for (var i = 0; i < word.length; i++) {
       fadeIn((0, _qol.find)(".letter-spawns"), letterElement(word[i], [word_modifiers[i]]));
     }
+    flashInvalid();
   } else {
     var point_text = (0, _qol.find)(".points");
     exports.points = points = points + score;
     (0, _qol.write)(point_text, points);
     words_submitted.push(word);
-    formatted_words.push(formatted_words);
+    formatted_words.push(formatted_word);
     held_letters.map(function (letter, index) {
       (0, _qol.remove)((0, _qol.find)(".hold-".concat(index)), letter);
       (0, _qol.remove)(holds[index], hook_icon);
@@ -15429,6 +15434,7 @@ var submitWord = function submitWord() {
       (0, _qol.detect)(letter, "click", letterHook);
       (0, _qol.undetect)(letter, "click", letterRem);
     });
+    flashValid();
   }
   word_modifiers = [];
   loaded_letters = [];
@@ -15638,7 +15644,6 @@ function letterElement(lett) {
   (0, _qol.write)(ele, letter);
   (0, _qol.addClass)(ele, ["tile", "inflow"]);
   var rotation = Math.floor(Math.random() * 60) - 30;
-  var translation = Math.floor(Math.random() * 100);
   var top = Math.floor(Math.random() * -40) - 25;
   var tile_type = Math.floor(Math.random() * 15 * 15);
   var tile_mod = "single-letter";
@@ -15652,8 +15657,17 @@ function letterElement(lett) {
     tile_mod = "double-letter";
   }
   (0, _qol.addClass)(ele, [tile_mod]);
+  var in_flow = "inflow1";
+  var flowid = Math.floor(Math.random() * 3);
+  if (flowid === 1) {
+    in_flow = "inflow2";
+  }
+  if (flowid === 2) {
+    in_flow = "inflow3";
+  }
+  (0, _qol.addClass)(ele, [in_flow]);
   ele.dataset.modifier = tile_mod;
-  (0, _qol.style)(ele, "\n        position: absolute; \n        left: 5vw; \n        top: ".concat(top, "px;\n        transform: rotate(").concat(rotation, "deg) translate(").concat(translation, "px,0px);\n    "));
+  (0, _qol.style)(ele, "\n        position: absolute; \n        left: 5vw; \n        top: ".concat(top, "px;\n        transform: rotate(").concat(rotation, "deg);\n    "));
   (0, _qol.detect)(ele, "click", letterTouch);
   letter_flow_list.push(ele);
   return ele;
@@ -15694,7 +15708,7 @@ function randomLetter() {
 }
 function loadLetter(letele) {
   fadeIn((0, _qol.find)(".slot-".concat(loaded_letters.length)), letele);
-  (0, _qol.remClass)(letele, ["inflow"]);
+  (0, _qol.remClass)(letele, ["inflow1", "inflow2", "inflow3"]);
   (0, _qol.addClass)(letele, ["loaded"]);
   (0, _qol.style)(letele, "\n        transform:rotate(0deg);\n        transform: translate(-1px,-1px);\n    ");
   loaded_letters.push(letele);
@@ -15739,13 +15753,32 @@ function fadeIn(parent, ele) {
   }
 }
 function fadeOut(parent, ele) {
-  console.log(ele);
   if (ele) {
     (0, _qol.addClass)(ele, ["faded"]);
     setTimeout(function () {
       (0, _qol.remove)(parent, ele);
     }, 50);
   }
+}
+function flashValid() {
+  slots.forEach(function (slot) {
+    (0, _qol.addClass)(slot, ["valid"]);
+  });
+  setTimeout(function () {
+    slots.forEach(function (slot) {
+      (0, _qol.remClass)(slot, ["valid"]);
+    });
+  }, 200);
+}
+function flashInvalid() {
+  slots.forEach(function (slot) {
+    (0, _qol.addClass)(slot, ["invalid"]);
+  });
+  setTimeout(function () {
+    slots.forEach(function (slot) {
+      (0, _qol.remClass)(slot, ["invalid"]);
+    });
+  }, 200);
 }
 
 },{"../main":1,"./qol":7}],9:[function(require,module,exports){
@@ -15764,6 +15797,7 @@ var countdown;
 var real_time_left = exports.real_time_left = 1000;
 var timerDisplay = document.querySelector('.timer');
 var popup = document.getElementById("popup");
+var prevSpace = 0;
 
 //const endTime = document.querySelector('.display__end-time');
 //const buttons = document.querySelectorAll('[data-time]');
@@ -15819,11 +15853,74 @@ document.customForm.addEventListener('submit', function(e) {
 });
 */
 
+function generateWordFlow() {
+  var flowOutput = document.getElementById("word-flow");
+  flowOutput.innerHTML = '';
+  console.log(_scrabble.formatted_words[0][1]);
+  for (var i = 0; i < _scrabble.formatted_words.length; i++) {
+    var boolHooked = false;
+    for (var j = 0; j < _scrabble.formatted_words[i].length; j++) {
+      //finds the length of the first formatted word -- how long is that first array? traverse through it all
+      if (_scrabble.formatted_words[i][j].hooked) {
+        //if any of the letters are hooked
+        boolHooked = true;
+      }
+    }
+    console.log(boolHooked);
+    if (boolHooked) {
+      var hookedIndex = 0;
+      var hookedLetter = '';
+      for (var l = 0; l < _scrabble.formatted_words[i].length; l++) {
+        if (_scrabble.formatted_words[i][l].hooked) {
+          hookedIndex = l;
+          hookedLetter = _scrabble.formatted_words[i][l].letter;
+        }
+      }
+      var hookedPrevIndex = 0;
+      for (var _l = 0; _l < _scrabble.formatted_words[i - 1].length; _l++) {
+        if (_scrabble.formatted_words[i - 1][_l].letter == hookedLetter) {
+          hookedPrevIndex = _l;
+        }
+      }
+      var spacesNeeded = hookedPrevIndex - hookedIndex;
+      var spaceSpan = document.createElement('span');
+      console.log(spacesNeeded);
+      spaceSpan.innerHTML = '&nbsp;'.repeat(spacesNeeded + 16 + prevSpace);
+      flowOutput.appendChild(spaceSpan);
+      for (var k = 0; k < _scrabble.formatted_words[i].length; k++) {
+        var span = document.createElement('span');
+        span.textContent = _scrabble.formatted_words[i][k].letter;
+        if (_scrabble.formatted_words[i][k].hooked) {
+          span.classList.add('hooked-letter');
+        }
+        flowOutput.appendChild(span);
+      }
+      prevSpace = spacesNeeded;
+      var br = document.createElement('br');
+      flowOutput.appendChild(br);
+    }
+    if (!boolHooked) {
+      var _spaceSpan = document.createElement('span');
+      _spaceSpan.innerHTML = '&nbsp;'.repeat(Math.max(0, 16));
+      flowOutput.appendChild(_spaceSpan);
+      for (var _k = 0; _k < _scrabble.formatted_words[i].length; _k++) {
+        var _span = document.createElement('span');
+        _span.textContent = _scrabble.formatted_words[i][_k].letter;
+        flowOutput.appendChild(_span);
+      }
+      var _br = document.createElement('br');
+      flowOutput.appendChild(_br);
+      prevSpace = 0;
+    }
+  }
+}
 function showPopup() {
+  (0, _cookie.setGameRunning)(false);
   popup.style.display = 'block';
+  generateWordFlow();
   (0, _cookie.store_points)(_scrabble.points);
-  (0, _scrabble.clear_all)();
   (0, _gameChart.makeChart)(_cookie.points_store);
+  (0, _scrabble.clear_all)();
 }
 
 },{"./cookie":5,"./game-chart":6,"./scrabble":8}]},{},[1]);
