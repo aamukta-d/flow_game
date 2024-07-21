@@ -37,6 +37,23 @@ function makeChart(yValues) {
             },
         },
     });
+    }
+        
+
+
+function removeData(chart) {
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data;
+    });
+    chart.update();
 }
+
+function addData(chart, newData) {
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data = newData;
+    });
+    chart.update();
+}
+ 
 
 export { makeChart };

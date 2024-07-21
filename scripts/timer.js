@@ -1,6 +1,6 @@
-import { game_running, setGameRunning} from "../main";
+import { points_store, store_points, setGameRunning } from "./cookie";
 import { makeChart } from "./game-chart";
-import {formatted_words} from "./scrabble";
+import { clear_all, formatted_words, points } from "./scrabble";
 
 let countdown;
 let real_time_left =1000;
@@ -57,7 +57,7 @@ function displayEndTime(timestamp) {
 
 function startTimer() {
   // Start a 1-minute countdown (60 seconds)
-  const seconds = 60;
+  const seconds = 20;
   timer(seconds);
 }
 
@@ -147,8 +147,10 @@ function generateWordFlow(){
 function showPopup(){
   setGameRunning(false);
   popup.style.display = 'block';
-  makeChart([1,2,3]);
   generateWordFlow();
+  store_points(points)
+  makeChart(points_store);
+  clear_all()
 }
 
 export {startTimer, timer ,real_time_left}

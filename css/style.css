@@ -132,7 +132,7 @@ html {
         left: -5vw;
       }
     to {
-        left: calc(100vw + 220px);
+        left: calc(105vw);
       }
     
 }
@@ -144,4 +144,8 @@ html {
     100% {
         transform: translate3d(85px, 0, 0);
     }
+}
+
+.instructions{
+    position:fixed;
 }

@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.game_running = void 0;
-exports.setGameRunning = setGameRunning;
 var _scrabble = require("./scripts/scrabble");
 var _qol = require("./scripts/qol");
 var _timer = require("./scripts/timer");
@@ -50,19 +49,16 @@ function _start() {
   return _start.apply(this, arguments);
 }
 var game_loop = function game_loop() {
-  (0, _qol.render)((0, _qol.find)(".letter-spawns"), (0, _scrabble.letterElement)((0, _scrabble.randomLetter)()));
+  (0, _scrabble.fadeIn)((0, _qol.find)(".letter-spawns"), (0, _scrabble.letterElement)((0, _scrabble.randomLetter)()));
   (0, _scrabble.cleanCards)();
   //console.log(getEventListeners(document.querySelectorAll('.tile')));
 };
 function end() {}
-function setGameRunning(_boolean) {
-  exports.game_running = game_running = _boolean;
-}
 start();
 game_loop();
 end();
 
-},{"./scripts/game-chart":5,"./scripts/qol":6,"./scripts/scrabble":7,"./scripts/timer":8}],2:[function(require,module,exports){
+},{"./scripts/game-chart":6,"./scripts/qol":7,"./scripts/scrabble":8,"./scripts/timer":9}],2:[function(require,module,exports){
 /*!
  * @kurkle/color v0.3.2
  * https://github.com/kurkle/color#readme
@@ -15087,6 +15083,61 @@ exports.valueOrDefault = valueOrDefault;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.points_store = void 0;
+exports.store_points = store_points;
+var points_store = exports.points_store = new Array(8).fill(0);
+function get_points() {
+  exports.points_store = points_store = [];
+  for (var i = 0; i < 8; i++) {
+    points_store.push(getCookie(i));
+  }
+}
+function store_points(points) {
+  console.log(points);
+  get_points();
+  if (points_store.length < 8) {
+    setCookie(points_store.length, points);
+  } else {
+    points_store.shift();
+    points_store[7] = points;
+    points_store.map(function (point, index) {
+      setCookie(index, point);
+    });
+    setCookie(7, points);
+  }
+  console.log(document.cookie);
+  console.log(points_store);
+}
+function setCookie(index, cvalue) {
+  var cname = index.toString();
+  var exdays = 180;
+  var d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  var expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+function getCookie(index) {
+  var name = index.toString() + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return parseInt(c.substring(name.length, c.length));
+    }
+  }
+  return 0;
+}
+
+},{}],6:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.makeChart = makeChart;
 var _chart = require("chart.js");
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
@@ -15096,40 +15147,54 @@ function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Sym
 function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 _chart.Chart.register.apply(_chart.Chart, _toConsumableArray(_chart.registerables));
-var chartInstance;
+var chart = "";
 function makeChart(yValues) {
-  var chart = document.getElementById("myChart").getContext("2d");
-  if (chartInstance) {
-    chartInstance.destroy();
-  }
-  chartInstance = new _chart.Chart(chart, {
-    type: "line",
-    data: {
-      labels: [0, 0, 0, 0, 0, 0, 0, 0],
-      datasets: [{
-        backgroundColor: "rgba(0,0,255,1.0)",
-        borderColor: "rgba(0,0,255,0.1)",
-        data: yValues
-      }]
-    },
-    options: {
-      scales: {
-        x: {
-          ticks: {
+  if (chart !== "") {
+    //removeData(chart)
+    addData(chart, yValues);
+  } else {
+    var ctx = document.getElementById("myChart");
+    chart = new _chart.Chart(ctx, {
+      type: "line",
+      data: {
+        labels: [0, 0, 0, 0, 0, 0, 0, 0],
+        datasets: [{
+          backgroundColor: "rgba(0,0,255,1.0)",
+          borderColor: "rgba(0,0,255,0.1)",
+          data: yValues
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            ticks: {
+              display: false
+            }
+          }
+        },
+        plugins: {
+          legend: {
             display: false
           }
         }
-      },
-      plugins: {
-        legend: {
-          display: false
-        }
       }
-    }
+    });
+  }
+}
+function removeData(chart) {
+  chart.data.datasets.forEach(function (dataset) {
+    dataset.data;
   });
+  chart.update();
+}
+function addData(chart, newData) {
+  chart.data.datasets.forEach(function (dataset) {
+    dataset.data = newData;
+  });
+  chart.update();
 }
 
-},{"chart.js":3}],6:[function(require,module,exports){
+},{"chart.js":3}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15248,7 +15313,7 @@ var getPosEle = function getPosEle(element, size) {
   };
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15256,6 +15321,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.checkWordNow = checkWordNow;
 exports.cleanCards = cleanCards;
+exports.clear_all = clear_all;
+exports.fadeIn = fadeIn;
 exports.formatted_words = void 0;
 exports.letterElement = letterElement;
 exports.loadWords = loadWords;
@@ -15329,7 +15396,7 @@ var submitWord = function submitWord() {
   var formatted_word = [];
   loaded_letters.map(function (letter, index) {
     word = word + letter.textContent;
-    (0, _qol.remove)(slots[index], letter);
+    fadeOut(slots[index], letter);
     (0, _qol.remove)(slots[index], hook_icon);
     word_modifiers.push(letter.dataset.modifier);
     formatted_word.push({
@@ -15341,23 +15408,24 @@ var submitWord = function submitWord() {
   var score = checkWordNow(word.toLowerCase(), formatted_word);
   if (score === 0) {
     for (var i = 0; i < word.length; i++) {
-      (0, _qol.render)((0, _qol.find)(".letter-spawns"), letterElement(word[i], [word_modifiers[i]]));
+      fadeIn((0, _qol.find)(".letter-spawns"), letterElement(word[i], [word_modifiers[i]]));
     }
   } else {
     var point_text = (0, _qol.find)(".points");
     exports.points = points = points + score;
     (0, _qol.write)(point_text, points);
     words_submitted.push(word);
-    formatted_words.push(formatted_word);
+    formatted_words.push(formatted_words);
     held_letters.map(function (letter, index) {
       (0, _qol.remove)((0, _qol.find)(".hold-".concat(index)), letter);
       (0, _qol.remove)(holds[index], hook_icon);
+      (0, _qol.remove)(holds[index], replace_icon_list[index]);
     });
     held_letters = [];
     loaded_letters.map(function (letter, index) {
       held_letters.push(letter);
       letter.dataset.hooked = "false";
-      (0, _qol.render)((0, _qol.find)(".hold-".concat(index)), letter);
+      fadeIn((0, _qol.find)(".hold-".concat(index)), letter);
       (0, _qol.detect)(letter, "click", letterHook);
       (0, _qol.undetect)(letter, "click", letterRem);
     });
@@ -15374,7 +15442,7 @@ function remove_replaces() {
 function add_replaces() {
   held_letters.map(function (letter, index) {
     if (letter !== "hooked") {
-      (0, _qol.render)(holds[index], replace_icon_list[index]);
+      fadeIn(holds[index], replace_icon_list[index]);
     }
   });
 }
@@ -15435,14 +15503,14 @@ var letterHook = function letterHook(e) {
     var letter = loaded_letters[index];
     letter.dataset.hooked = "false";
     held_letters[index2] = letter;
-    (0, _qol.render)(holds[index2], letter);
+    fadeIn(holds[index2], letter);
     downgrade_letter(letter);
-    (0, _qol.remove)(slots[index], letter);
+    fadeOut(slots[index], letter);
     (0, _qol.remove)(slots[index], hook_icon);
     held_letters[index3] = "hooked";
-    (0, _qol.render)(slots[index], e.target);
+    fadeIn(slots[index], e.target);
     upgrade_letter(e.target);
-    (0, _qol.render)(slots[index], hook_icon);
+    fadeIn(slots[index], hook_icon);
     loaded_letters[index] = e.target;
     e.target.dataset.hooked = "true";
     remove_replaces();
@@ -15451,10 +15519,10 @@ var letterHook = function letterHook(e) {
     if (e.target.dataset.hooked === "false") {
       if (loaded_letters.length < 8) {
         var _index = held_letters.indexOf(e.target);
-        (0, _qol.remove)(holds[_index], e.target);
+        fadeOut(holds[_index], e.target);
         held_letters[_index] = "hooked";
         loadLetter(e.target);
-        (0, _qol.render)(slots[loaded_letters.length - 1], hook_icon);
+        fadeIn(slots[loaded_letters.length - 1], hook_icon);
         e.target.dataset.hooked = "true";
         upgrade_letter(e.target);
         remove_replaces();
@@ -15465,14 +15533,14 @@ var letterHook = function letterHook(e) {
       var _index3 = held_letters.indexOf("hooked");
       held_letters[_index3] = e.target;
       e.target.dataset.hooked = "false";
-      (0, _qol.render)(holds[_index3], e.target);
+      fadeIn(holds[_index3], e.target);
       downgrade_letter(e.target);
-      (0, _qol.remove)(slots[_index2], e.target);
+      fadeOut(slots[_index2], e.target);
       (0, _qol.remove)(slots[_index2], hook_icon);
       for (var i = _index2 + 1; i < loaded_letters.length; i++) {
         var temp = loaded_letters[i];
-        (0, _qol.remove)((0, _qol.find)(".slot-".concat(i)), temp);
-        (0, _qol.render)((0, _qol.find)(".slot-".concat(i - 1)), temp);
+        fadeIn((0, _qol.find)(".slot-".concat(i)), temp);
+        fadeIn((0, _qol.find)(".slot-".concat(i - 1)), temp);
         loaded_letters[i - 1] = temp;
       }
       loaded_letters.pop();
@@ -15570,7 +15638,7 @@ function letterElement(lett) {
   (0, _qol.write)(ele, letter);
   (0, _qol.addClass)(ele, ["tile", "inflow"]);
   var rotation = Math.floor(Math.random() * 60) - 30;
-  var translation = Math.floor(Math.random() * 200);
+  var translation = Math.floor(Math.random() * 100);
   var top = Math.floor(Math.random() * -40) - 25;
   var tile_type = Math.floor(Math.random() * 15 * 15);
   var tile_mod = "single-letter";
@@ -15585,7 +15653,7 @@ function letterElement(lett) {
   }
   (0, _qol.addClass)(ele, [tile_mod]);
   ele.dataset.modifier = tile_mod;
-  (0, _qol.style)(ele, "\n        position: absolute; \n        left: 5vw; \n        top: ".concat(top, "px;\n        transform: rotate(").concat(rotation, "deg) translate(-").concat(translation, "px,0px);\n    "));
+  (0, _qol.style)(ele, "\n        position: absolute; \n        left: 5vw; \n        top: ".concat(top, "px;\n        transform: rotate(").concat(rotation, "deg) translate(").concat(translation, "px,0px);\n    "));
   (0, _qol.detect)(ele, "click", letterTouch);
   letter_flow_list.push(ele);
   return ele;
@@ -15595,7 +15663,7 @@ var letterTouch = function letterTouch(e) {
     console.log("touch");
     if (loaded_letters.length < 8) {
       (0, _qol.undetect)(e.target, "click", letterTouch);
-      (0, _qol.remove)((0, _qol.find)(".letter-spawns"), e.target);
+      fadeOut((0, _qol.find)(".letter-spawns"), e.target);
       letter_flow_list = letter_flow_list.filter(function (letter) {
         return letter === e.target;
       });
@@ -15607,15 +15675,15 @@ var letterTouch = function letterTouch(e) {
 var letterRem = function letterRem(e) {
   console.log("rem");
   var index = loaded_letters.indexOf(e.target);
-  (0, _qol.remove)((0, _qol.find)(".slot-".concat(index)), e.target);
+  fadeOut((0, _qol.find)(".slot-".concat(index)), e.target);
   for (var i = index + 1; i < loaded_letters.length; i++) {
     var temp = loaded_letters[i];
-    (0, _qol.remove)((0, _qol.find)(".slot-".concat(i)), temp);
-    (0, _qol.render)((0, _qol.find)(".slot-".concat(i - 1)), temp);
+    fadeOut((0, _qol.find)(".slot-".concat(i)), temp);
+    fadeIn((0, _qol.find)(".slot-".concat(i - 1)), temp);
     loaded_letters[i - 1] = temp;
   }
   loaded_letters.pop();
-  (0, _qol.render)((0, _qol.find)(".letter-spawns"), letterElement(e.target.textContent, [e.target.dataset.modifier]));
+  fadeIn((0, _qol.find)(".letter-spawns"), letterElement(e.target.textContent, [e.target.dataset.modifier]));
 };
 function randomLetter() {
   var result = '';
@@ -15625,7 +15693,7 @@ function randomLetter() {
   return result;
 }
 function loadLetter(letele) {
-  (0, _qol.render)((0, _qol.find)(".slot-".concat(loaded_letters.length)), letele);
+  fadeIn((0, _qol.find)(".slot-".concat(loaded_letters.length)), letele);
   (0, _qol.remClass)(letele, ["inflow"]);
   (0, _qol.addClass)(letele, ["loaded"]);
   (0, _qol.style)(letele, "\n        transform:rotate(0deg);\n        transform: translate(-1px,-1px);\n    ");
@@ -15634,16 +15702,53 @@ function loadLetter(letele) {
 function cleanCards() {
   for (var i = letter_flow_list.length - 1; i >= 0; i--) {
     if (checkOffScreen(letter_flow_list[i])) {
-      (0, _qol.remove)((0, _qol.find)(".letter-spawns"), letter_flow_list[i]);
+      fadeOut((0, _qol.find)(".letter-spawns"), letter_flow_list[i]);
       letter_flow_list.splice(i, 1);
     }
   }
 }
 function checkOffScreen(el) {
-  return el.offsetLeft > document.body.offsetWidth + 200;
+  return el.offsetLeft > document.body.offsetWidth;
+}
+function clear_all() {
+  console.log("clear");
+  submitWord();
+  exports.points = points = 0;
+  var point_text = (0, _qol.find)(".points");
+  (0, _qol.write)(point_text, points);
+  exports.formatted_words = formatted_words = [];
+  held_letters.map(function (letters, index) {
+    fadeOut(holds[index], letters);
+    (0, _qol.remove)(holds[index], replace_icon_list[index]);
+  });
+  loaded_letters.map(function (letters, index) {
+    fadeOut(slots[index], letters);
+    (0, _qol.remove)(slots[index], hook_icon);
+  });
+  held_letters = [];
+  loaded_letters = [];
+  exports.words_submitted = words_submitted = [];
+}
+function fadeIn(parent, ele) {
+  if (ele != null) {
+    (0, _qol.addClass)(ele, ["faded"]);
+    (0, _qol.render)(parent, ele);
+    setTimeout(function () {
+      (0, _qol.remClass)(ele, ["faded"]);
+    }, 50);
+  }
+}
+function fadeOut(parent, ele) {
+  console.log(ele);
+  if (ele) {
+    (0, _qol.addClass)(ele, ["faded"]);
+    setTimeout(function () {
+      (0, _qol.remove)(parent, ele);
+    }, 50);
+  }
 }
 
-},{"../main":1,"./qol":6}],8:[function(require,module,exports){
+},{"../main":1,"./qol":7}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15652,14 +15757,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.real_time_left = void 0;
 exports.startTimer = startTimer;
 exports.timer = timer;
-var _main = require("../main");
+var _cookie = require("./cookie");
 var _gameChart = require("./game-chart");
 var _scrabble = require("./scrabble");
 var countdown;
 var real_time_left = exports.real_time_left = 1000;
 var timerDisplay = document.querySelector('.timer');
 var popup = document.getElementById("popup");
-var prevSpace = 0;
 
 //const endTime = document.querySelector('.display__end-time');
 //const buttons = document.querySelectorAll('[data-time]');
@@ -15700,7 +15804,7 @@ function displayEndTime(timestamp) {
 }
 function startTimer() {
   // Start a 1-minute countdown (60 seconds)
-  var seconds = 60;
+  var seconds = 20;
   timer(seconds);
 }
 
@@ -15715,72 +15819,11 @@ document.customForm.addEventListener('submit', function(e) {
 });
 */
 
-function generateWordFlow() {
-  var flowOutput = document.getElementById("word-flow");
-  flowOutput.innerHTML = '';
-  console.log(_scrabble.formatted_words[0][1]);
-  for (var i = 0; i < _scrabble.formatted_words.length; i++) {
-    var boolHooked = false;
-    for (var j = 0; j < _scrabble.formatted_words[i].length; j++) {
-      //finds the length of the first formatted word -- how long is that first array? traverse through it all
-      if (_scrabble.formatted_words[i][j].hooked) {
-        //if any of the letters are hooked
-        boolHooked = true;
-      }
-    }
-    console.log(boolHooked);
-    if (boolHooked) {
-      var hookedIndex = 0;
-      var hookedLetter = '';
-      for (var l = 0; l < _scrabble.formatted_words[i].length; l++) {
-        if (_scrabble.formatted_words[i][l].hooked) {
-          hookedIndex = l;
-          hookedLetter = _scrabble.formatted_words[i][l].letter;
-        }
-      }
-      var hookedPrevIndex = 0;
-      for (var _l = 0; _l < _scrabble.formatted_words[i - 1].length; _l++) {
-        if (_scrabble.formatted_words[i - 1][_l].letter == hookedLetter) {
-          hookedPrevIndex = _l;
-        }
-      }
-      var spacesNeeded = hookedPrevIndex - hookedIndex;
-      var spaceSpan = document.createElement('span');
-      console.log(spacesNeeded);
-      spaceSpan.innerHTML = '&nbsp;'.repeat(spacesNeeded + 16 + prevSpace);
-      flowOutput.appendChild(spaceSpan);
-      for (var k = 0; k < _scrabble.formatted_words[i].length; k++) {
-        var span = document.createElement('span');
-        span.textContent = _scrabble.formatted_words[i][k].letter;
-        if (_scrabble.formatted_words[i][k].hooked) {
-          span.classList.add('hooked-letter');
-        }
-        flowOutput.appendChild(span);
-      }
-      prevSpace = spacesNeeded;
-      var br = document.createElement('br');
-      flowOutput.appendChild(br);
-    }
-    if (!boolHooked) {
-      var _spaceSpan = document.createElement('span');
-      _spaceSpan.innerHTML = '&nbsp;'.repeat(Math.max(0, 16));
-      flowOutput.appendChild(_spaceSpan);
-      for (var _k = 0; _k < _scrabble.formatted_words[i].length; _k++) {
-        var _span = document.createElement('span');
-        _span.textContent = _scrabble.formatted_words[i][_k].letter;
-        flowOutput.appendChild(_span);
-      }
-      var _br = document.createElement('br');
-      flowOutput.appendChild(_br);
-      prevSpace = 0;
-    }
-  }
-}
 function showPopup() {
-  (0, _main.setGameRunning)(false);
   popup.style.display = 'block';
-  (0, _gameChart.makeChart)([1, 2, 3]);
-  generateWordFlow();
+  (0, _cookie.store_points)(_scrabble.points);
+  (0, _scrabble.clear_all)();
+  (0, _gameChart.makeChart)(_cookie.points_store);
 }
 
-},{"../main":1,"./game-chart":5,"./scrabble":7}]},{},[1]);
+},{"./cookie":5,"./game-chart":6,"./scrabble":8}]},{},[1]);
