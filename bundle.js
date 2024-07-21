@@ -15852,7 +15852,7 @@ function displayEndTime(timestamp) {
 }
 function startTimer() {
   // Start a 1-minute countdown (60 seconds)
-  var seconds = 10;
+  var seconds = 60;
   timer(seconds);
 }
 

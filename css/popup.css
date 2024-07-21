@@ -100,3 +100,9 @@ span.popuptext{
     margin-inline-end: 0px;
     unicode-bidi: isolate;
   }
+
+  .imag{
+    border:none;
+    width: 750px;
+    height: 250px;
+  }
