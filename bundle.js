@@ -16,12 +16,18 @@ function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 var replay = document.getElementById("replay");
 var popup = document.getElementById("popup");
+var startPopup = document.getElementById("start-popup");
+var startButton = document.getElementById("start-button");
 var loop = "";
 var game_running = exports.game_running = true;
 replay.addEventListener('click', function () {
   popup.style.display = 'none';
   (0, _timer.startTimer)();
   exports.game_running = game_running = true;
+});
+startButton.addEventListener('click', function () {
+  startPopup.style.display = 'none';
+  (0, _timer.startTimer)();
 });
 function start() {
   return _start.apply(this, arguments);
@@ -34,13 +40,14 @@ function _start() {
           _context.next = 2;
           return (0, _scrabble.loadWords)();
         case 2:
-          (0, _timer.startTimer)();
+          startPopup.style.display = 'block';
           if (loop === "") {
             loop = setInterval(game_loop, 1000);
           }
           if (_timer.real_time_left <= 1) {
             clearInterval(loop);
           }
+          //load
         case 5:
         case "end":
           return _context.stop();

@@ -68,7 +68,9 @@
     <div class = "blank slot-7"></div>
     <div class = "submit">Submit</div>
   </div>
-  <div id = "popup">
+</div>
+
+<div id = "popup">
     <p> game over </p>
     <p> high scores </p>
     <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
@@ -76,95 +78,93 @@
       <p>word flow</p>
     </div>
     <button id="replay"> replay </button>
-  </div>
-</div>
 </div>
 
-<div  class="instructions">
-<button onclick="myFunction()">INSTRUCTIONS</button>
-    <div id="myPopup" class="popup">
-        <span class="popuptext" id="myPopupText">
-            <button onclick="showPopup('a')" class="lang">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/30px-Flag_of_Spain.svg.png" class = "flag">
-              Español
-            </button>
-            <button onclick="showPopup('b')" class="lang">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/30px-Flag_of_France.svg.png" class = "flag">
-              Français
-            </button>
-            <button onclick="showPopup('c')" class="lang">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/30px-Flag_of_Turkey.svg.png" class = "flag">
-              Türkçe
-            </button>
-            <button onclick="showPopup('d')" class="lang">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/30px-Flag_of_Germany.svg.png" class = "flag">
-              Deutsch
-            </button>
-            <button onclick="showPopup('e')" class="lang">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Croatia.svg/30px-Flag_of_Croatia.svg.png" class = "flag">
-              Hrvatski
-            </button>
-            <button onclick="showPopup('f')" class="lang">
-              <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/30px-Flag_of_the_United_Kingdom.svg.png" class="flag">
-              English</button>
-        </span>
-    </div>
-    <div id="popupA" class="popup">
-        <span class="popuptext" id="popupTextA">
-            <h1>¡Mejora tu inglés con Flow!</h1>
-            Flow está diseñado para ayudarte a mejorar la fluidez de tu vocabulario. Tienes 60 segundos para formar tantas palabras como sea posible usando las letras dadas. Obtendrás más puntos por las palabras más largas y por las palabras que hagas en menos tiempo. ¡Buena suerte!
-            <button class="close" onclick="closePopup('popupTextA')">x</button>
-            <button class="back" onclick="goBack()">Volver</button>
-        </span>
-    </div>
-    <div id="popupB" class="popup">
-        <span class="popuptext" id="popupTextB">
-            <h1>Améliorez votre anglais avec Flow!</h1>
-            Flow est conçu pour vous aider à améliorer la fluidité de votre vocabulaire. Vous avez 60 secondes pour créer autant de mots que possible en utilisant les lettres données. Vous obtiendrez plus de points pour les mots plus longs et les mots que vous faites en moins de temps. Bonne chance!
-            <button class="close" onclick="closePopup('popupTextB')">x</button>
-            <button class="back" onclick="goBack()">Retour</button>
-        </span>
-    </div>
-    <div id="popupC" class="popup">
-        <span class="popuptext" id="popupTextC">
-            <h1>Flow ile İngilizcenizi geliştirin!</h1>
-            Flow, kelime dağarcığınızın akıcılığını geliştirmenize yardımcı olmak için tasarlanmıştır. Verilen harfleri kullanarak mümkün olduğunca çok kelime yapmak için 60 saniyeniz var. Daha uzun kelimeler ve daha kısa sürede yaptığınız kelimeler için daha fazla puan alacaksınız. İyi şanslar!
-            <button class="close" onclick="closePopup('popupTextC')">x</button>
-            <button class="back" onclick="goBack()">Geri Git</button>
-        </span>
-    </div>
-    <div id="popupD" class="popup">
-        <span class="popuptext" id="popupTextD">
-            <h1>Verbessern Sie Ihr Englisch mit Flow!</h1>
-            Flow wurde entwickelt, um Ihnen zu helfen, Ihren Wortschatz zu verbessern. Sie haben 60 Sekunden Zeit, um mit den vorgegebenen Buchstaben so viele Wörter wie möglich zu bilden. Sie erhalten mehr Punkte für längere Wörter und Wörter, die Sie in kürzerer Zeit machen. Viel Glück!
-            <button class="close" onclick="closePopup('popupTextD')">x</button>
-            <button class="back" onclick="goBack()">Zurück</button>
-        </span>
-    </div>
-    <div id="popupE" class="popup">
-        <span class="popuptext" id="popupTextE">
-            <h1>Poboljšajte svoj engleski uz Flow!</h1>
-            Flow je osmišljen kako bi vam pomogao poboljšati tečnost vašeg vokabulara. Imate 60 sekundi da napravite što više riječi pomoću danih slova. Dobit ćete više bodova za duže riječi i riječi koje napravite za manje vremena. Sretno!
-            <button class="close" onclick="closePopup('popupTextE')">x</button>
-            <button class="back" onclick="goBack()">Nazad</button>
-        </span>
-    </div>
-    <div id="popupF" class="popup">
-      <span class="popuptext" id="popupTextF">
-          <h1>Improve your English Flow!</h1>
-          Flow is designed to help you improve your vocabulary fluency. You have 60 seconds to create as many words as possible using the given letters. You will get more points for longer words and words you do in less time. Good luck!
-          <button class="close" onclick="closePopup('popupTextF')">x</button>
-          <button class="back" onclick="goBack()">Back</button>
-      </span>
+<div id = "start-popup">
+    <button id="start-button"> Start </button>
+
+    <div class="instructions">
+      <div id="myPopup" class="popupshow">
+          
+              <button onclick="showPopup('a')" class="lang">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/30px-Flag_of_Spain.svg.png" class="flag"> Español
+              </button>
+              <button onclick="showPopup('b')" class="lang">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/30px-Flag_of_France.svg.png" class="flag"> Français
+              </button>
+              <button onclick="showPopup('c')" class="lang">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/30px-Flag_of_Turkey.svg.png" class="flag"> Türkçe
+              </button>
+              <button onclick="showPopup('d')" class="lang">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/30px-Flag_of_Germany.svg.png" class="flag"> Deutsch
+              </button>
+              <button onclick="showPopup('e')" class="lang">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Croatia.svg/30px-Flag_of_Croatia.svg.png" class="flag"> Hrvatski
+              </button>
+              <button onclick="showPopup('f')" class="lang">
+                  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/30px-Flag_of_the_United_Kingdom.svg.png" class="flag"> English
+              </button>
+  
+      </div>
+  
+
+      <div id="popupA" class="popup">
+          <span class="popuptext" id="popupTextA">
+              <h1>¡Mejora tu inglés con Flow!</h1>
+              Flow está diseñado para ayudarte a mejorar la fluidez de tu vocabulario. Tienes 60 segundos para formar tantas palabras como sea posible usando las letras dadas. Obtendrás más puntos por las palabras más largas y por las palabras que hagas en menos tiempo. ¡Buena suerte!
+              <button class="close" onclick="closePopup('popupTextA')">x</button>
+              <button class="back" onclick="goBack()">Volver</button>
+          </span>
+      </div>
+      <div id="popupB" class="popup">
+          <span class="popuptext" id="popupTextB">
+              <h1>Améliorez votre anglais avec Flow!</h1>
+              Flow est conçu pour vous aider à améliorer la fluidité de votre vocabulaire. Vous avez 60 secondes pour créer autant de mots que possible en utilisant les lettres données. Vous obtiendrez plus de points pour les mots plus longs et les mots que vous faites en moins de temps. Bonne chance!
+              <button class="close" onclick="closePopup('popupTextB')">x</button>
+              <button class="back" onclick="goBack()">Retour</button>
+          </span>
+      </div>
+      <div id="popupC" class="popup">
+          <span class="popuptext" id="popupTextC">
+              <h1>Flow ile İngilizcenizi geliştirin!</h1>
+              Flow, kelime dağarcığınızın akıcılığını geliştirmenize yardımcı olmak için tasarlanmıştır. Verilen harfleri kullanarak mümkün olduğunca çok kelime yapmak için 60 saniyeniz var. Daha uzun kelimeler ve daha kısa sürede yaptığınız kelimeler için daha fazla puan alacaksınız. İyi şanslar!
+              <button class="close" onclick="closePopup('popupTextC')">x</button>
+              <button class="back" onclick="goBack()">Geri Git</button>
+          </span>
+      </div>
+      <div id="popupD" class="popup">
+          <span class="popuptext" id="popupTextD">
+              <h1>Verbessern Sie Ihr Englisch mit Flow!</h1>
+              Flow wurde entwickelt, um Ihnen zu helfen, Ihren Wortschatz zu verbessern. Sie haben 60 Sekunden Zeit, um mit den vorgegebenen Buchstaben so viele Wörter wie möglich zu bilden. Sie erhalten mehr Punkte für längere Wörter und Wörter, die Sie in kürzerer Zeit machen. Viel Glück!
+              <button class="close" onclick="closePopup('popupTextD')">x</button>
+              <button class="back" onclick="goBack()">Zurück</button>
+          </span>
+      </div>
+      <div id="popupE" class="popup">
+          <span class="popuptext" id="popupTextE">
+              <h1>Poboljšajte svoj engleski uz Flow!</h1>
+              Flow je osmišljen kako bi vam pomogao poboljšati tečnost vašeg vokabulara. Imate 60 sekundi da napravite što više riječi pomoću danih slova. Dobit ćete više bodova za duže riječi i riječi koje napravite za manje vremena. Sretno!
+              <button class="close" onclick="closePopup('popupTextE')">x</button>
+              <button class="back" onclick="goBack()">Nazad</button>
+          </span>
+      </div>
+      <div id="popupF" class="popup">
+          <span class="popuptext" id="popupTextF">
+              <h1>Improve your English Flow!</h1>
+              Flow is designed to help you improve your vocabulary fluency. You have 60 seconds to create as many words as possible using the given letters. You will get more points for longer words and words you do in less time. Good luck!
+              <button class="close" onclick="closePopup('popupTextF')">x</button>
+              <button class="back" onclick="goBack()">Back</button>
+          </span>
+      </div>
   </div>
 </div>
 
     <script>
-        function myFunction() {
-            var popup = document.getElementById("myPopupText");
-            popup.classList.toggle("show");
-        }
 
+          document.addEventListener("DOMContentLoaded", function () {
+              // Automatically show the language options when the page loads
+              document.getElementById("myPopup").classList.add("show");
+          });
 
         function showPopup(button) {
             var popupA = document.getElementById("popupTextA");

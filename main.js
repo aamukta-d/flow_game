@@ -4,6 +4,8 @@ import { real_time_left, timer, startTimer } from "./scripts/timer";
 import {makeChart} from "./scripts/game-chart"
 const replay = document.getElementById("replay")
 const popup = document.getElementById("popup")
+const startPopup = document.getElementById("start-popup")
+const startButton = document.getElementById("start-button")
 
 
 let loop = ""
@@ -15,16 +17,24 @@ replay.addEventListener('click', function() {
     game_running = true;
 })
 
+startButton.addEventListener('click', function(){
+   startPopup.style.display = 'none';
+   startTimer()
+})
+
 
 async function start(){
     await loadWords()
-    startTimer()
+    
+    startPopup.style.display = 'block';
     if (loop === ""){
         loop = setInterval(game_loop, 1000);
     }
+   
     if (real_time_left <= 1){
         clearInterval(loop)
     }
+    //load
 }
 
 

@@ -11,8 +11,8 @@ html {
     position: relative;
     text-align: center;
     background-image: url("../background.png");
-    background-size:     cover;                      
-    background-repeat:   no-repeat;
+    background-size: cover;                      
+    background-repeat: no-repeat;
 }
 
 .pre-wave {
@@ -142,7 +142,68 @@ html {
 }
 
 .hooked-letter {
-    color: red; /* Change this to the desired color */
+    color: red; 
+}
+
+#start-popup {
+    display: none; 
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 80vh;
+    height: 55vh;
+    overflow: auto;
+    background-image: url("../startpopup.png");
+    background-size: cover; /* Scales the image to cover the entire element */
+    background-position: contain;
+    padding-top: 60px;
+  }
+
+.popuptext {
+    display: none;
+}
+
+.popuptext.show {
+    display: block;
+}
+
+.popupshow {
+    position: relative;
+    width: 80%;
+    height: 80%;
+    top: 400px;
+    left: 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 20px;
+    overflow: auto;
+}
+
+.lang{
+    font-size: 14px;
+
+    background-color: white; 
+    color: black;
+    padding: 10px 20px; /* Add padding to make the button larger */
+    border: 1px solid black; /* Remove default border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: transform 0.3s; /* Smooth transition effect */
+}
+
+#start-button{
+    font-size: 14px;
+    position: relative;
+    top: 600px;
+    width: auto;
+    padding: 20px 35px;
+    background-color: white;
+    border: 1px solid black; /* Remove default border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    margin-top: 20px; /* Add margin to create space above the button */
 }
 
 @keyframes tile-move {
