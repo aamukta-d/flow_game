@@ -73,7 +73,7 @@ html {
 }
 
 .inflow1{
-    animation-duration: 45s;
+    animation-duration: 60s;
     animation-name: moving-tiles;
     position: absolute;
     animation: tile-move 12s linear forwards;
@@ -103,7 +103,6 @@ html {
 
 }
 
-
 #popup {
     display: none; 
     position: fixed;
@@ -113,14 +112,18 @@ html {
     width: 80vh;
     height: 40vh;
     overflow: auto;
-    background-color: #33B2FF; 
     padding-top: 60px;
+    background-image: url("../endpopup.png");
+    background-size: cover; /* Scales the image to cover the entire element */
+    background-position: contain;
+    background-attachment: scroll;
   }
 
 #replay{
    
     font-size: 14px;
-
+    position: relative;
+    top: 300px;
     background-color: white; 
     color: black;
     padding: 10px 20px; /* Add padding to make the button larger */
@@ -170,10 +173,10 @@ html {
 
 .popupshow {
     position: relative;
-    width: 80%;
-    height: 80%;
-    top: 400px;
-    left: 50%;
+    width: 70%;
+    height: 20%;
+    top: 175px;
+    left: 25%;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -196,15 +199,32 @@ html {
 #start-button{
     font-size: 14px;
     position: relative;
-    top: 600px;
+    top: 400px;
     width: auto;
-    padding: 20px 35px;
+    padding: 15px 55px;
     background-color: white;
     border: 1px solid black; /* Remove default border */
     border-radius: 5px; /* Add rounded corners */
     cursor: pointer; /* Change cursor to pointer on hover */
     margin-top: 20px; /* Add margin to create space above the button */
+    transition: transform 0.3s; /* Smooth transition effect */
 }
+
+#start-button:hover{
+    background-color: rgb(155, 231, 240);
+    transform: scale(1.1); /* Enlarge the button on hover */
+}
+
+#highscores{
+    position: relative;
+    top: 160px;
+}
+
+#myChart{
+    position: relative;
+    top: 190px;
+}
+
 
 @keyframes tile-move {
 

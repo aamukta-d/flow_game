@@ -58,7 +58,7 @@ function displayEndTime(timestamp) {
 
 function startTimer() {
   // Start a 1-minute countdown (60 seconds)
-  const seconds = 20;
+  const seconds = 5;
   timer(seconds);
 }
 

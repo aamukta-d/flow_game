@@ -9,7 +9,7 @@ const startButton = document.getElementById("start-button")
 
 
 let loop = ""
-let game_running = true
+let game_running = false;
 
 replay.addEventListener('click', function() {
     popup.style.display = 'none'; 
@@ -20,6 +20,7 @@ replay.addEventListener('click', function() {
 startButton.addEventListener('click', function(){
    startPopup.style.display = 'none';
    startTimer()
+   game_running = true;
 })
 
 

@@ -19,7 +19,7 @@ var popup = document.getElementById("popup");
 var startPopup = document.getElementById("start-popup");
 var startButton = document.getElementById("start-button");
 var loop = "";
-var game_running = exports.game_running = true;
+var game_running = exports.game_running = false;
 replay.addEventListener('click', function () {
   popup.style.display = 'none';
   (0, _timer.startTimer)();
@@ -28,6 +28,7 @@ replay.addEventListener('click', function () {
 startButton.addEventListener('click', function () {
   startPopup.style.display = 'none';
   (0, _timer.startTimer)();
+  exports.game_running = game_running = true;
 });
 function start() {
   return _start.apply(this, arguments);
@@ -15846,7 +15847,7 @@ function displayEndTime(timestamp) {
 }
 function startTimer() {
   // Start a 1-minute countdown (60 seconds)
-  var seconds = 20;
+  var seconds = 5;
   timer(seconds);
 }
 
