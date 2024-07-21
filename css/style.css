@@ -11,7 +11,8 @@ html {
     position: relative;
     text-align: center;
     background-image: url("../background.png");
-    background-size: cover;                      
+    background-size: cover;    
+              
     background-repeat: no-repeat;
 }
 
@@ -118,7 +119,7 @@ html {
     background-image: url("../endpopup.png");
     background-size: cover; /* Scales the image to cover the entire element */
     background-position: contain;
-    background-attachment: scroll;
+    background-attachment: local;
   }
 
 #replay{
@@ -216,6 +217,7 @@ html {
 }
 
 #highscores{
+    padding-top: 3em;
     position: relative;
 }
 
