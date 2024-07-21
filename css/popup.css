@@ -1,11 +1,14 @@
 
 .popup {
-    position: relative;
-    display: inline-block;
+    position: absolute;
+    width: 110vh;
+    height: 70vh;
+    left:-50vh;
+    top: 20vh;
+    display:inline-block;
 }
 .popuptext {
     visibility: hidden;
-    width: 500px;
     background-color: #555;
     color: #fff;
     text-align: center;
@@ -20,6 +23,15 @@
     transition: opacity 0.3s;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
+
+h1{
+    font-size: 30px;
+}
+
+span.popuptext{
+    font-size: 20px;
+}
+
 .popuptext::after {
     content: "";
     position: absolute;
@@ -53,3 +65,22 @@
     width:15px;
     display: inline;
 }
+
+
+
+#start-popup-fixed{
+    position: absolute;
+    left: 50vw;
+    top: 50vh;
+    width: 110vh;
+    height: 90vh;
+    transform: translate(-50%,-50%);
+    background-image: url("../startpopup.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: 10px solid white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }

@@ -165,6 +165,12 @@ html {
     padding-top: 60px;
   }
 
+  .instructions{
+    position: relative;
+    height: 55vh;
+    top: 25vh;
+  }
+
 .popuptext {
     display: none;
 }
@@ -174,11 +180,6 @@ html {
 }
 
 .popupshow {
-    position: relative;
-    width: 70%;
-    height: 20%;
-    top: 175px;
-    left: 25%;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -200,15 +201,15 @@ html {
 #start-button{
     font-size: 14px;
     position: relative;
-    top: 400px;
     width: auto;
     padding: 15px 55px;
     background-color: white;
     border: 1px solid black; /* Remove default border */
     border-radius: 5px; /* Add rounded corners */
     cursor: pointer; /* Change cursor to pointer on hover */
-    margin-top: 20px; /* Add margin to create space above the button */
     transition: transform 0.3s; /* Smooth transition effect */
+    left: -3vw;
+    top: 5vh;
 }
 
 #start-button:hover{
@@ -246,6 +247,6 @@ html {
     }
 }
 
-.instructions{
-    position:fixed;
+.flag-buttons{
+    width: 60vh;
 }
