@@ -15898,7 +15898,7 @@ function generateWordFlow() {
       var spacesNeeded = hookedPrevIndex - hookedIndex;
       var spaceSpan = document.createElement('span');
       console.log(spacesNeeded);
-      spaceSpan.innerHTML = '&nbsp;'.repeat(spacesNeeded + 16 + prevSpace);
+      spaceSpan.innerHTML = '&nbsp;'.repeat(spacesNeeded + 23 + prevSpace);
       flowOutput.appendChild(spaceSpan);
       for (var k = 0; k < _scrabble.formatted_words[i].length; k++) {
         var span = document.createElement('span');
@@ -15914,7 +15914,7 @@ function generateWordFlow() {
     }
     if (!boolHooked) {
       var _spaceSpan = document.createElement('span');
-      _spaceSpan.innerHTML = '&nbsp;'.repeat(Math.max(0, 16));
+      _spaceSpan.innerHTML = '&nbsp;'.repeat(Math.max(0, 23));
       flowOutput.appendChild(_spaceSpan);
       for (var _k = 0; _k < _scrabble.formatted_words[i].length; _k++) {
         var _span = document.createElement('span');

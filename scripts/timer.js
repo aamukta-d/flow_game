@@ -59,7 +59,7 @@ function displayEndTime(timestamp) {
 
 function startTimer() {
   // Start a 1-minute countdown (60 seconds)
-  const seconds = 10;
+  const seconds = 60;
   timer(seconds);
 }
 
@@ -110,7 +110,7 @@ function generateWordFlow(){
         let spacesNeeded = hookedPrevIndex-hookedIndex;
         let spaceSpan = document.createElement('span');
         console.log(spacesNeeded)
-        spaceSpan.innerHTML = '&nbsp;'.repeat(spacesNeeded+16+prevSpace);
+        spaceSpan.innerHTML = '&nbsp;'.repeat(spacesNeeded+23+prevSpace);
         flowOutput.appendChild(spaceSpan);
 
         for (let k = 0; k<formatted_words[i].length; k++){
@@ -129,7 +129,7 @@ function generateWordFlow(){
 
       if (!boolHooked){
         let spaceSpan = document.createElement('span');
-        spaceSpan.innerHTML = '&nbsp;'.repeat(Math.max(0, 16));
+        spaceSpan.innerHTML = '&nbsp;'.repeat(Math.max(0, 23));
         flowOutput.appendChild(spaceSpan);
           for (let k = 0; k<formatted_words[i].length; k++){
               let span = document.createElement('span');

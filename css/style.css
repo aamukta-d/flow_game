@@ -117,7 +117,7 @@ html {
     width: 130vh;
     height: 90vh;
     overflow: auto;
-    background-image: url("../endpopup.png");
+    background-image: linear-gradient(#33b2ff, #00ffdd);
     background-size: cover; /* Scales the image to cover the entire element */
     background-position: contain;
     background-attachment: local;
@@ -144,6 +144,7 @@ html {
 
 
 #word-flow{
+    width: 100%;
     text-align: left;
     font-family: 'Monaco', Courier, monospace;
     white-space: pre; /* Preserves whitespace formatting */
